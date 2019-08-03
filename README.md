@@ -9,9 +9,10 @@ Elliot Kjerstad and Aaron Baker
 Overview
 -----------------------
 
-	This is a small program that was built for network traffic captures (PCAPS) during the REU internship at DSU.
-	The program analyzes traffic to help determine protocol usage, ssl/tls versions used, IP to IP communication, IP to FQDN, 
-	and collects HTTP requests, responses, and data.
+	This is a small program that was built for network traffic captures (PCAPS) 
+	during the REU internship at DSU. The program analyzes traffic to help 
+	determine protocol usage, ssl/tls versions used, IP to IP communication, 
+	IP to FQDN, and collects HTTP requests, responses, and data.
 
 Usage
 -----------------------
