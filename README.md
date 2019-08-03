@@ -1,4 +1,4 @@
-# DSUPCAP
+# bustaPcap
 
 Built with Python 3.7.3
 -----------------------
@@ -21,16 +21,24 @@ Usage
 
 	Command Arguments
 	-----------------------
-	    -o SAVE_FILE,   This option saves the output
-                        into the provided filename this auto saves as a text 
-						file so extentions can be omited
-						
-		-d DIR_PATH,    Directory path that holds all PCAP files for parsing.
-                        Allowed files within are .pcap, .cap, .pcapng
-						
-		-p PCAP_FILE,   PCAP File that will be parsed. Include whole
-                        destination path: Allowed file types are: .pcap, .cap,
-                        .pcapng
+		-h, --help            show this help message and exit
+
+		-q  --FQDN=DO_FQDN
+							Usage: -q <FALSE|true>    This option finds Fully
+							Qualified Domain Names with each IP found
+
+		-o  --OUTPUT=SAVE_FILE
+							Usage: -o <filename>    This option saves the output
+							into the provided filename
+
+		-d  --DIR=DIR_PATH
+							Directory path that holds all PCAP files for parsing.
+							Allowed files within are .pcap, .cap, .pcapng
+
+		-p  --PCAP=PCAP_FILE
+							PCAP File that will be parsed. Include whole
+							destination path: Allowed file types are: .pcap, .cap,
+							.pcapng
 
 	Pip Requirements
 	-----------------------
