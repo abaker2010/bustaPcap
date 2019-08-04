@@ -7,7 +7,7 @@ import os
 import platform
 from colorama import Fore, Back, Style
 
-class Writer:
+class Writer():
     #region Init For Class
     def __init__(self, filename, data, mode, *args, **kwargs):
         self.filename = filename
@@ -23,7 +23,7 @@ class Writer:
     def Save_Totals(self):
         with open(self.path + "\\Reports\'" + self.filename + "-Totals" + ".txt", self.mode) as file:
             try:
-                file.write(self.data.Save_Printer())
+                file.write(self.data.Save_Collector())
                 file.write("\n\n")
             except Exception as e:
                 print("Saving Error")
@@ -35,7 +35,7 @@ class Writer:
         # changes needed to be made so that if the file exists the file is deleted and then re-created
         with open(self.path + self.filename + "-All-Info" + ".txt", self.mode) as file:
             try:
-                file.write(self.data.Save_Printer())
+                file.write(self.data.Save_Collector())
                 file.write("\n\n")
             except Exception as e:
                 print("Saving Error")

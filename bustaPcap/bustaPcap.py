@@ -9,10 +9,11 @@ from optparse import OptionParser
 import colorama 
 from colorama import Fore, Back, Style
 
-from classes.Print import Print
 from classes.Collector import Collector
+from classes.Print import Print
 from classes.Totals import Totals
 from classes.Writer import Writer
+from classes.Saver import Saver
 from classes.FolderStruct import FolderStruct
 
 #region Option Parse
@@ -111,15 +112,15 @@ def Single_PCAP():
     folders = FolderStruct(os.path.dirname(os.path.abspath(__file__)))
     folders.Create_Report_Folder((os.path.basename(options.pcap_file)).split('.')[0])
     capture = Collector(captures, FileName=(os.path.basename(options.pcap_file)), FolderName = os.path.dirname(os.path.abspath(__file__)))
-    caps = Print(capture, options.do_fqdn)
+    #caps = Print(capture, options.do_fqdn)
     
     if bool(options.verbose) is True:
-        caps.Print_All()    
+        Print(capture, options.do_fqdn).Print_All()    
     
     print(Fore.LIGHTCYAN_EX + "\n\t\t[?] " + Style.RESET_ALL + "Total Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - now) + " seconds.." + Style.RESET_ALL)
 
     if options.save_file:
-        return caps
+        return Saver(capture, options.do_fqdn)
     else:
         return None
 #endregion
@@ -219,17 +220,16 @@ def Main():
         print(Fore.LIGHTGREEN_EX + "\t-----------------" + Style.RESET_ALL)
         if type(collected) is Totals:
             folder = FolderStruct(os.path.dirname(os.path.abspath(__file__)))
-            print(folder.Get_Path())
             for pkt in collected.All_Collected():
                 folders = FolderStruct(os.path.dirname(os.path.abspath(__file__)))
                 folders.Create_Report_Folder(pkt.Get_Name().split('.')[0])
                 print("\t\t- %s : %s" % ("Saving data from", pkt.Get_Name()))
-                SaveCaptToFile(Print(pkt, options.do_fqdn), folders)
-            fileWriter = Writer(options.save_file, Print(collected, options.do_fqdn), "a", path = folder.Get_Path())
+                SaveCaptToFile(Saver(pkt, options.do_fqdn), folders)
+            fileWriter = Writer(options.save_file, Saver(collected, options.do_fqdn), "a", path = folder.Get_Path())
             fileWriter.Save_Totals()
         else:
             folders = FolderStruct(os.path.dirname(os.path.abspath(__file__)))
-            folders.Create_Report_Folder(collected.collection.Get_Name().split('.')[0])
+            folders.Create_Report_Folder(collected.capts.Get_Name().split('.')[0])
             SaveCaptToFile(collected, folders)
     return
 #endregion
