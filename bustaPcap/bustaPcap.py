@@ -117,7 +117,7 @@ def Single_PCAP():
     if bool(options.verbose) is True:
         Print(capture, options.do_fqdn).Print_All()    
     
-    print(Fore.LIGHTCYAN_EX + "\n\t\t[?] " + Style.RESET_ALL + "Total Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - now) + " seconds.." + Style.RESET_ALL)
+    print(Fore.LIGHTCYAN_EX + "\n\t  [?] " + Style.RESET_ALL + "Total Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - now) + " seconds.." + Style.RESET_ALL)
 
     if options.save_file:
         return Saver(capture, options.do_fqdn)
@@ -151,12 +151,12 @@ def Dir_PCAPS():
         print(Fore.LIGHTGREEN_EX + "\n\tProcessing File: " + Fore.LIGHTYELLOW_EX + file + Style.RESET_ALL)
         capture = Collector(captures, FileName=file, FolderName = os.path.dirname(os.path.abspath(__file__)))
         total_collection.Add_Collector(capture)
-        print(Fore.LIGHTCYAN_EX + "\n\t[?] " + Style.RESET_ALL + "Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - now) + " seconds.." + Style.RESET_ALL)
+        print(Fore.LIGHTCYAN_EX + "\n\t  [?] " + Style.RESET_ALL + "Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - now) + " seconds.." + Style.RESET_ALL)
     
     if bool(options.verbose) is True:
         Print(total_collection, options.do_fqdn).Print_All()
 
-    print(Fore.LIGHTCYAN_EX + "\t[?] " + Style.RESET_ALL + "Total Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - totaltime) + " seconds.." + Style.RESET_ALL)
+    print(Fore.LIGHTCYAN_EX + "\t  [?] " + Style.RESET_ALL + "Total Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - totaltime) + " seconds.." + Style.RESET_ALL)
 
     if options.save_file:
         return total_collection
@@ -196,7 +196,7 @@ def SaveCaptToFile(capt, folders):
 
     saveHttpMalformedHeaders = Writer(options.save_file + "-HTTP-Malformed-Headers", capt.Save_HttpMalformedHeaders(), "w+", infoname = "Http Malformed Headers", path = folders.Get_Path())
     saveHttpMalformedHeaders.Save_Info()
-
+    print("\n")
     fileWriter = Writer(options.save_file, capt, "w+", infoname = "All Data", path = folders.Get_Path())
     fileWriter.Save()
     return

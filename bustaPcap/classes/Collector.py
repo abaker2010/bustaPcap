@@ -50,7 +50,7 @@ class Collector:
 
         for pkt in self.capts:
             self.packetCount += 1
-            sys.stdout.write(Fore.LIGHTCYAN_EX + "\r\t[?] " + Style.RESET_ALL + "Packet Num : " + Fore.LIGHTYELLOW_EX + str(self.packetCount) + Style.RESET_ALL)
+            sys.stdout.write(Fore.LIGHTCYAN_EX + "\r\t  [?] " + Style.RESET_ALL + "Packet Num : " + Fore.LIGHTYELLOW_EX + str(self.packetCount) + Style.RESET_ALL)
             uri = None
             try:
                 src = pkt.ip.src + " -> " + pkt.ip.dst

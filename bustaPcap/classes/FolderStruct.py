@@ -36,7 +36,7 @@ class FolderStruct:
             os.makedirs(self.path)
             print(Fore.RED + "\n\t[!] " + Style.RESET_ALL + "Creating Report Subfolder: " + name + "\n")
         else:
-            print(Fore.LIGHTGREEN_EX + "\t\t[-] " + Style.RESET_ALL + "Report Subfolder Is Present") 
+            print(Fore.LIGHTGREEN_EX + "\t\t[-] " + Style.RESET_ALL + "Report Subfolder Is Present : " + Fore.LIGHTYELLOW_EX + name + "\n" + Style.RESET_ALL) 
         return
     #endregion
 
