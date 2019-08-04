@@ -13,28 +13,40 @@ from classes.FolderStruct import FolderStruct
 
 class Collector:
     def __init__(self, capts, *args, **kwargs):
-        #print(Fore.GREEN + "\n\t[+] " + Style.RESET_ALL + "Initializing Protocol Dictionary\n")
+    #region Class Variables
+        #region Passed
         self.captureName = kwargs.get("FileName", None)
         self.folderPath = kwargs.get("FolderName", None)
+        self.capts = capts
+        #endregion
+
+        #region Numerical
         self.packetCount = 0
         self.udp = 0
         self.tcp = 0
         self.llc = 0
         self.other = 0
+        #endregion
+        
+        #region Dictionaries 
         self.protocols = {}
         self.ipAddresses = {}
         self.ip_fqdn = {}
         self.httpInfo = {}
         self.httpMalformedHeaders = {}
-
-        self.capts = capts
         self.tls = {}
-        self.llcList = ["llc", "stp", "dtp", "cdp"]
-        self.udpList = ["udp", "ntp", "dns", "mdns", "ssdp", "browser", "nbns", "smb", "gquic", "dhcpv6"]
-        self.tcpList = ["http", "tcp", "data-text-lines", "tls"]
         self.lDict = {"TCP" : {}, "UDP" : {}, "LLC" : {}, "OTHER" : {} }
         self.tlsversion = {"0x00000002":"SSLv2", "0x00000300":"SSLv3", "0x00000301":"TLSv1.0",
                           "0x00000302":"TLSv1.1", "0x00000303":"TLSv1.2", "0x00000304":"TLSv1.3"}
+        #endregion
+
+        #region Arrays
+        self.llcList = ["llc", "stp", "dtp", "cdp"]
+        self.udpList = ["udp", "ntp", "dns", "mdns", "ssdp", "browser", "nbns", "smb", "gquic", "dhcpv6"]
+        self.tcpList = ["http", "tcp", "data-text-lines", "tls"]
+        #endregion
+    #endregion 
+
 
         for pkt in self.capts:
             self.packetCount += 1
@@ -161,31 +173,48 @@ class Collector:
             sys.stdout.flush()
         return
     
+    #region Set Collected Name 
     def Set_Name(self, name):
         self.captureName = name
         return
+    #endregion
 
+    #region Get Collected Name Retruns String
     def Get_Name(self):
         return self.captureName
+    #endregion
 
+    #region Get HTTP Information Returns Dictionary
     def getHttpInfo(self):
         return self.httpInfo
+    #endregion
 
+    #region Get HTTP Malformed Headers Returns Dictionary
     def getHttpMalformedHeaders(self):
         return self.httpMalformedHeaders
+    #endregion
 
+    #region Get Total UDP Count Returns Int
     def totalUDP(self):
         return self.udp
+    #endregion
 
+    #region Get Total TCP Count Returns Int
     def totalTCP(self):
         return self.tcp
+    #endregion
 
+    #region Get Total LLC Count Returns Int
     def totalLLC(self):
         return self.llc
+    #endregion
 
+    #region Get Total Other Protocol Count Returns Int
     def totalOTHER(self):
         return self.other
+    #endregion
 
+    #region Get Filtered Protocols Returns Dictionary
     def filtered_protocols(self):
         self.lDict = {"TCP" : {}, "UDP" : {}, "LLC" : {}, "OTHER" : {} }
         self.udp = 0
@@ -222,7 +251,9 @@ class Collector:
                 self.other += self.protocols[pkt]
 
         return self.lDict
+    #endregion
 
+    #region Get IP Addresses Only Returns Array
     def ip_addresses_only(self):
         ipList = []
         for k in self.ipAddresses.keys():
@@ -232,7 +263,9 @@ class Collector:
             if ips[1] not in ipList:
                 ipList.append(ips[1])
         return ipList
+    #endregion
 
+    #region Get Filtered IP Addresses Returns Dictionary
     def ip_addresses_filtered(self):
         newDict = {}
         for k in self.ipAddresses.keys():
@@ -246,7 +279,9 @@ class Collector:
                     newDict[rev] = 0
                 pass
         return newDict
+    #endregion
 
+    #region Get FQDN Returns Dictionary
     def fqdn(self):
         if not self.ip_fqdn:
             for snt in self.ip_addresses_only():
@@ -260,15 +295,24 @@ class Collector:
                     else: 
                         self.ip_fqdn[snt] = dn
         return self.ip_fqdn
+    #endregion
 
+    #region Get SSL/TLS Returns Dictionary
     def ssltls(self):
         return self.tls
+    #endregion
 
+    #region Get All Protocols Returns Dictionary
     def all_protocols(self):
         return self.protocols
+    #endregion
 
+    #region Get Packet Count Returns Int
     def packet_count(self):
         return self.packetCount
+    #endregion
 
+    #region Get IP Addresses Returns Dictionary
     def ip_addresses(self):
         return self.ipAddresses
+    #endregion

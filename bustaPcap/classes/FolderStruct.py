@@ -4,11 +4,14 @@ import colorama
 from colorama import Fore, Back, Style
 
 class FolderStruct:
+    #region Init For Class
     def __init__(self, path):
         self.path = path
         self.folders = ["\\Reports"]
         return
+    #endregion
 
+    #region Check Folders
     def Check_Folders(self):
         for f in self.folders:
             path = self.path + f
@@ -21,6 +24,9 @@ class FolderStruct:
             else:
                 print(Fore.LIGHTGREEN_EX + "\t\t[-] " + Style.RESET_ALL + "All folders are present")
         return
+    #endregion
+
+    #region Check For Report Folder
     def Create_Report_Folder(self, name):
         path = self.path + self.folders[0] + "\\" + name + "\\"
         if platform.system() != "windows":
@@ -32,6 +38,9 @@ class FolderStruct:
         else:
             print(Fore.LIGHTGREEN_EX + "\t\t[-] " + Style.RESET_ALL + "Report Subfolder Is Present") 
         return
+    #endregion
 
+    #region Get Path
     def Get_Path(self):
         return self.path + "\\"
+    #endregion

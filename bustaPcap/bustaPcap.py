@@ -15,6 +15,7 @@ from classes.Totals import Totals
 from classes.Writer import Writer
 from classes.FolderStruct import FolderStruct
 
+#region Option Parse
 parser = OptionParser()
 
 parser.add_option("-q", "--FQDN", dest="do_fqdn",
@@ -29,12 +30,19 @@ parser.add_option("-d", "--DIR", dest="dir_path",
 parser.add_option("-p", "--PCAP", dest="pcap_file",
                   help="PCAP File that will be parsed. Include whole destination path: Allowed file types are: .pcap, .cap, .pcapng")
 
-options, args = parser.parse_args()
+parser.add_option("-v", "--VERBOSE", dest="verbose",
+                  help="Verbose setting allowing for optional printing to screen", default=False)
 
+options, args = parser.parse_args()
+#endregion
+
+#region Usage
 def Usage():
     parser.print_help()
     return
+#endregion
 
+#region Print Title
 def Print_Title():
     print(Fore.LIGHTGREEN_EX + "\n\t:::::::::  :::    :::  :::::::: ::::::::::: :::     :::::::::   ::::::::      :::     :::::::::")
     print("\t:+:    :+: :+:    :+: :+:    :+:    :+:   :+: :+:   :+:    :+: :+:    :+:   :+: :+:   :+:    :+:")
@@ -46,9 +54,10 @@ def Print_Title():
     print("\n\t================================================================================================")
     print("\t=                                       Zedo  &  Moose                                         =")
     print("\t================================================================================================\n\n" + Style.RESET_ALL)
-    
     return
+#endregion
 
+#region Arg Checker
 def Arg_Check():
     if options.pcap_file:
         if not options.pcap_file.endswith('.pcap') | options.pcap_file.endswith('.cap') | options.pcap_file.endswith('.pcapng'):
@@ -71,17 +80,30 @@ def Arg_Check():
             print(Fore.RED + "\t[!] " + Stlye.RESET_ALL + "Invalid -q option! Accepts True or False")
             exit()
 
+    if options.verbose:
+        if options.verbose.lower() == "true":
+            options.verbose = True
+        elif options.verbose.lower() == "false":
+            options.verbose = False
+        else:
+            print(Fore.RED + "\t[!] " + Stlye.RESET_ALL + "Invalid -v option! Accepts True or False")
+            exit()
+
     if not options.pcap_file and not options.dir_path:
         print(Fore.RED + "\t[!] " + Style.RESET_ALL + "Please use -p <pcap> or -d <directory>")
         exit()
     return
+#endregion
 
+#region Check Folders
 def Check_Folders():
     print(Fore.LIGHTGREEN_EX + "\t[-] " + Style.RESET_ALL + "Checking Folders")
     folders = FolderStruct(os.path.dirname(os.path.abspath(__file__)))
     folders.Check_Folders()
     return
+#endregion
 
+#region Single PCAP
 def Single_PCAP():
     now = time.time()
     
@@ -90,7 +112,9 @@ def Single_PCAP():
     folders.Create_Report_Folder((os.path.basename(options.pcap_file)).split('.')[0])
     capture = Collector(captures, FileName=(os.path.basename(options.pcap_file)), FolderName = os.path.dirname(os.path.abspath(__file__)))
     caps = Print(capture, options.do_fqdn)
-    caps.Print_All()
+    
+    if bool(options.verbose) is True:
+        caps.Print_All()    
     
     print(Fore.LIGHTCYAN_EX + "\n\t\t[?] " + Style.RESET_ALL + "Total Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - now) + " seconds.." + Style.RESET_ALL)
 
@@ -98,7 +122,9 @@ def Single_PCAP():
         return caps
     else:
         return None
+#endregion
 
+#region Directory PCAP
 def Dir_PCAPS():
     folders = []
     files = []
@@ -125,15 +151,19 @@ def Dir_PCAPS():
         capture = Collector(captures, FileName=file, FolderName = os.path.dirname(os.path.abspath(__file__)))
         total_collection.Add_Collector(capture)
         print(Fore.LIGHTCYAN_EX + "\n\t[?] " + Style.RESET_ALL + "Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - now) + " seconds.." + Style.RESET_ALL)
-        
-    #Print(total_collection, options.do_fqdn).Print_All()
+    
+    if bool(options.verbose) is True:
+        Print(total_collection, options.do_fqdn).Print_All()
+
     print(Fore.LIGHTCYAN_EX + "\t[?] " + Style.RESET_ALL + "Total Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - totaltime) + " seconds.." + Style.RESET_ALL)
 
     if options.save_file:
         return total_collection
     else:
         return None
+#endregion
 
+#region Save Capture Information To File
 def SaveCaptToFile(capt, folders):
     
     print(Fore.LIGHTGREEN_EX + "\t\t-------------------------------" + Style.RESET_ALL)
@@ -169,7 +199,9 @@ def SaveCaptToFile(capt, folders):
     fileWriter = Writer(options.save_file, capt, "w+", infoname = "All Data", path = folders.Get_Path())
     fileWriter.Save()
     return
+#endregion 
 
+#region Main
 def Main():
     colorama.init()
     Arg_Check()
@@ -192,8 +224,6 @@ def Main():
                 folders = FolderStruct(os.path.dirname(os.path.abspath(__file__)))
                 folders.Create_Report_Folder(pkt.Get_Name().split('.')[0])
                 print("\t\t- %s : %s" % ("Saving data from", pkt.Get_Name()))
-                #fileWriter = Writer(options.save_file, Print(pkt, options.do_fqdn), "a")
-                #fileWriter.Save()
                 SaveCaptToFile(Print(pkt, options.do_fqdn), folders)
             fileWriter = Writer(options.save_file, Print(collected, options.do_fqdn), "a", path = folder.Get_Path())
             fileWriter.Save_Totals()
@@ -202,7 +232,9 @@ def Main():
             folders.Create_Report_Folder(collected.collection.Get_Name().split('.')[0])
             SaveCaptToFile(collected, folders)
     return
+#endregion
 
+#region Main named if for keyboard interrupt
 if __name__ == "__main__":
     try:
         Main()
@@ -213,3 +245,4 @@ if __name__ == "__main__":
         print(e)
     finally:
         exit()
+#endregion
