@@ -176,11 +176,13 @@ def SaveCaptToFile(capt, folders):
         saveFQDN = Writer(options.save_file + "-IPS-FQDN", capt.Save_IPS_Filtered(), "w+", infoname = "IPs to FQDN", path = folders.Get_Path())
         saveFQDN.Save_Info()
 
-    saveSSLTLS = Writer(options.save_file + "-SSL-TLS", capt.Save_SSLTLS(), "w+", infoname = "SSL/TLS", path = folders.Get_Path())
-    saveSSLTLS.Save_Info()
+    if capt.Save_SSLTLS() is not None:
+        saveSSLTLS = Writer(options.save_file + "-SSL-TLS", capt.Save_SSLTLS(), "w+", infoname = "SSL/TLS", path = folders.Get_Path())
+        saveSSLTLS.Save_Info()
 
-    saveLLC = Writer(options.save_file + "-LLC", capt.Save_LLC(), "w+", infoname = "LLC", path = folders.Get_Path())
-    saveLLC.Save_Info()
+    if capt.Save_LLC() is not None:
+        saveLLC = Writer(options.save_file + "-LLC", capt.Save_LLC(), "w+", infoname = "LLC", path = folders.Get_Path())
+        saveLLC.Save_Info()
 
     saveTCP = Writer(options.save_file + "-TCP", capt.Save_TCP(), "w+", infoname = "TCP", path = folders.Get_Path())
     saveTCP.Save_Info()
@@ -191,11 +193,14 @@ def SaveCaptToFile(capt, folders):
     saveOtherProtcols = Writer(options.save_file + "-Other-Protocols", capt.Save_Other_Protocols(), "w+", infoname = "Other Protocols", path = folders.Get_Path())
     saveOtherProtcols.Save_Info()
 
-    saveHttpInfo = Writer(options.save_file + "-Http-Info", capt.Save_HttpInfo(), "w+", infoname = "HTTP Info", path = folders.Get_Path())
-    saveHttpInfo.Save_Info()
+    if capt.Save_HttpInfo() is not None:
+        saveHttpInfo = Writer(options.save_file + "-Http-Info", capt.Save_HttpInfo(), "w+", infoname = "HTTP Info", path = folders.Get_Path())
+        saveHttpInfo.Save_Info()
 
-    saveHttpMalformedHeaders = Writer(options.save_file + "-HTTP-Malformed-Headers", capt.Save_HttpMalformedHeaders(), "w+", infoname = "Http Malformed Headers", path = folders.Get_Path())
-    saveHttpMalformedHeaders.Save_Info()
+    if capt.Save_HttpMalformedHeaders() is not None:
+        saveHttpMalformedHeaders = Writer(options.save_file + "-HTTP-Malformed-Headers", capt.Save_HttpMalformedHeaders(), "w+", infoname = "Http Malformed Headers", path = folders.Get_Path())
+        saveHttpMalformedHeaders.Save_Info()
+
     print("\n")
     fileWriter = Writer(options.save_file, capt, "w+", infoname = "All Data", path = folders.Get_Path())
     fileWriter.Save()

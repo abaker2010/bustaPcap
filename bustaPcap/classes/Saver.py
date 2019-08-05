@@ -19,15 +19,26 @@ class Saver(Collector, Totals):
         toSave = ""
         toSave += "%s\n" % self.Save_Header()
         toSave += "\n%s" % self.Save_TCP()
-        toSave += "\n%s" % self.Save_SSLTLS()
+        
+        if self.Save_SSLTLS() is not None:
+            toSave += "\n%s" % self.Save_SSLTLS()
+
         toSave += "\n%s" % self.Save_UDP()
-        toSave += "\n%s" % self.Save_LLC()
+
+        if self.Save_LLC() is not None:
+            toSave += "\n%s" % self.Save_LLC()
+        
         toSave += "\n%s" % self.Save_Other_Protocols()
         toSave += "\n%s" % self.Save_IPS_Filtered()
         if self.do_fqdn is True:
             toSave += "\n%s" % self.Save_FQDN()
-        toSave += "\n%s" % self.Save_HttpInfo()
-        toSave += "\n%s" % self.Save_HttpMalformedHeaders()
+
+        if self.Save_HttpInfo() is not None:
+            toSave += "\n%s" % self.Save_HttpInfo()
+
+        if self.Save_HttpMalformedHeaders() is not None:
+            toSave += "\n%s" % self.Save_HttpMalformedHeaders()
+
         return toSave
     #endregion
 
@@ -68,15 +79,22 @@ class Saver(Collector, Totals):
     #region Save SSL/TLS Information Returns String
     def Save_SSLTLS(self):
         toSave = "" 
-        toSave += "\n\t\t[-] SSL/TLS Version"
-        toSave += "\n\t\t-------------"
+        header = "\n\t\t[-] SSL/TLS Version"
+        header += "\n\t\t-------------"
         if type(self.capts) is Collector:
-            for k, v in self.capts.ssltls().items():
-                toSave += "\n\t\t\t%s -> %s" % (k, v)
+            if bool(self.capts.ssltls()) is True:
+                toSave += header
+                for k, v in self.capts.ssltls().items():
+                    toSave += "\n\t\t\t%s -> %s" % (k, v)
         else:
-            for k, v in self.capts.Capture_TLS().items():
-                toSave += "\n\t\t\t%s -> %s" % (k, v)
-        return toSave
+            if bool(self.capts.Capture_TLS()) is True:
+                toSave += header
+                for k, v in self.capts.Capture_TLS().items():
+                    toSave += "\n\t\t\t%s -> %s" % (k, v)
+        if toSave is not "":
+            return toSave
+        else:
+            return None
     #endregion
 
     
@@ -101,19 +119,26 @@ class Saver(Collector, Totals):
     #region Save LLC Information Returns String
     def Save_LLC(self):
         toSave = ""
-        toSave += "\n\t\t[-] LLC"
-        toSave += "\n\t\t-------------"
+        header = "\n\t\t[-] LLC"
+        header += "\n\t\t-------------"
         if type(self.capts) is Collector:
             up = self.capts.filtered_protocols()
-            for t in up["LLC"].keys():
-                toSave += "\n\t\t\t%s -> %s" % (t, up["LLC"][t])
-                toSave += "\n\t\t\t{0:.2f}%".format((up["LLC"][t] / self.capts.totalLLC() * 100))
+            if bool(up["LLC"]) is True:
+                toSave += header
+                for t in up["LLC"].keys():
+                    toSave += "\n\t\t\t%s -> %s" % (t, up["LLC"][t])
+                    toSave += "\n\t\t\t{0:.2f}%".format((up["LLC"][t] / self.capts.totalLLC() * 100))
         else:
             fp = self.capts.Capture_Filtered_Protocols()
-            for t in self.capts.Capture_Filtered_Protocols()["LLC"].keys():
-                toSave += "\n\t\t\t%s -> %s" % (t, fp["LLC"][t])
-                toSave += "\n\t\t\t{0:.2f}%".format((fp["LLC"][t] / self.capts.Total_LLC() * 100))
-        return toSave
+            if bool(fp["LLC"]) is True:
+                toSave += header
+                for t in fp["LLC"].keys():
+                    toSave += "\n\t\t\t%s -> %s" % (t, fp["LLC"][t])
+                    toSave += "\n\t\t\t{0:.2f}%".format((fp["LLC"][t] / self.capts.Total_LLC() * 100))
+        if toSave is not "":
+            return toSave
+        else:
+            return None
     #endregion
     
     #region Save Other Protocols Returns String
@@ -169,11 +194,13 @@ class Saver(Collector, Totals):
     #region Save Http Info Returns String
     def Save_HttpInfo(self):
         toSave = ""
-        toSave += "\n\t\t-------------"
-        toSave += "\n\t\t[-] HTTP Information"
-        toSave += "\n\t\t-------------"
+        
         if type(self.capts) is Collector:
             if bool(self.capts.getHttpInfo()) is not False:
+                toSave += "\n\t\t-------------"
+                toSave += "\n\t\t[-] HTTP Information"
+                toSave += "\n\t\t-------------"
+
                 httpInfo = self.capts.getHttpInfo()
                 for url in httpInfo:
                     toSave += "\n\n\t\tURL: %s" % (url)
@@ -199,12 +226,12 @@ class Saver(Collector, Totals):
                             for head in header:
                                 toSave += "\n\t\t\t\t%s" % (head)
                             toSave += "\n"
-            else:
-                toSave += "\n\t\t\tNo Information Found"
                             
-        toSave += "\n\n"
-
-        return toSave
+                toSave += "\n\n"
+        if toSave is not "":
+            return toSave
+        else:
+            return None
     #endregion
 
     #region Save Http Malformed Headers Returns String
@@ -245,5 +272,8 @@ class Saver(Collector, Totals):
                         for pktnum in headersMalformed[url]["error"]:
                             toSave += "\n\t\t\t\t\tError: PKT Num: %s : %s" % (pktnum, headersMalformed[url]["error"][pktnum])
                     toSave += "\n\n"
-        return toSave
+        if toSave is not "":
+            return toSave
+        else:
+            return None
     #endregion

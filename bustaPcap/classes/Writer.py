@@ -21,7 +21,7 @@ class Writer():
 
     #region Save Totals For Printer Data
     def Save_Totals(self):
-        with open(self.path + "\\Reports\'" + self.filename + "-Totals" + ".txt", self.mode) as file:
+        with open(self.path + "\\Totals\\" + self.filename + "-Directory-Totals" + ".txt", self.mode) as file:
             try:
                 file.write(self.data.Save_Collector())
                 file.write("\n\n")
