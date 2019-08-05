@@ -164,49 +164,6 @@ def Dir_PCAPS():
         return None
 #endregion
 
-#region Save Capture Information To File
-def SaveCaptToFile(capt, folders):
-    
-    print(Fore.LIGHTGREEN_EX + "\t\t-------------------------------" + Style.RESET_ALL)
-    #print("\t\t\t- %s : %s" % ("Saving data from", capt.collection.Get_Name()))
-    saveIPFilters = Writer(options.save_file + "-Filtered-IPS", capt.Save_IPS_Filtered(), "w+", infoname = "Filtered IPS", path = folders.Get_Path())
-    saveIPFilters.Save_Info()
-
-    if options.do_fqdn is True:
-        saveFQDN = Writer(options.save_file + "-IPS-FQDN", capt.Save_IPS_Filtered(), "w+", infoname = "IPs to FQDN", path = folders.Get_Path())
-        saveFQDN.Save_Info()
-
-    if capt.Save_SSLTLS() is not None:
-        saveSSLTLS = Writer(options.save_file + "-SSL-TLS", capt.Save_SSLTLS(), "w+", infoname = "SSL/TLS", path = folders.Get_Path())
-        saveSSLTLS.Save_Info()
-
-    if capt.Save_LLC() is not None:
-        saveLLC = Writer(options.save_file + "-LLC", capt.Save_LLC(), "w+", infoname = "LLC", path = folders.Get_Path())
-        saveLLC.Save_Info()
-
-    saveTCP = Writer(options.save_file + "-TCP", capt.Save_TCP(), "w+", infoname = "TCP", path = folders.Get_Path())
-    saveTCP.Save_Info()
-
-    saveUDP = Writer(options.save_file + "-UDP", capt.Save_UDP(), "w+", infoname = "UDP", path = folders.Get_Path())
-    saveUDP.Save_Info()
-
-    saveOtherProtcols = Writer(options.save_file + "-Other-Protocols", capt.Save_Other_Protocols(), "w+", infoname = "Other Protocols", path = folders.Get_Path())
-    saveOtherProtcols.Save_Info()
-
-    if capt.Save_HttpInfo() is not None:
-        saveHttpInfo = Writer(options.save_file + "-Http-Info", capt.Save_HttpInfo(), "w+", infoname = "HTTP Info", path = folders.Get_Path())
-        saveHttpInfo.Save_Info()
-
-    if capt.Save_HttpMalformedHeaders() is not None:
-        saveHttpMalformedHeaders = Writer(options.save_file + "-HTTP-Malformed-Headers", capt.Save_HttpMalformedHeaders(), "w+", infoname = "Http Malformed Headers", path = folders.Get_Path())
-        saveHttpMalformedHeaders.Save_Info()
-
-    print("\n")
-    fileWriter = Writer(options.save_file, capt, "w+", infoname = "All Data", path = folders.Get_Path())
-    fileWriter.Save()
-    return
-#endregion 
-
 #region Main
 def Main():
     colorama.init()
@@ -229,13 +186,13 @@ def Main():
                 folders = FolderStruct(os.path.dirname(os.path.abspath(__file__)))
                 folders.Create_Report_Folder(pkt.Get_Name().split('.')[0])
                 print("\t\t- %s : %s" % ("Saving data from", pkt.Get_Name()))
-                SaveCaptToFile(Saver(pkt, options.do_fqdn), folders)
+                Saver(Saver(pkt, options.do_fqdn), options.do_fqdn, FileName=pkt.Get_Name().split('.')[0], Folders=folders, Path=folders.Get_Path()).Save()
             fileWriter = Writer(options.save_file, Saver(collected, options.do_fqdn), "a", path = folder.Get_Path())
             fileWriter.Save_Totals()
         else:
             folders = FolderStruct(os.path.dirname(os.path.abspath(__file__)))
             folders.Create_Report_Folder(collected.capts.Get_Name().split('.')[0])
-            SaveCaptToFile(collected, folders)
+            Saver(collected, options.do_fqdn, FileName=options.save_file, Folders=folders, Path=folders.Get_Path()).Save()
     return
 #endregion
 

@@ -5,15 +5,60 @@ import colorama
 from colorama import Fore, Back, Style
 from classes.Collector import Collector
 from classes.Totals import Totals
+from classes.Writer import Writer
 
 class Saver(Collector, Totals):
     #regoin Init For Class
     def __init__(self, capts, do_fqdn, *args, **kwargs):
         self.capts = capts
         self.do_fqdn = do_fqdn
+        self.folderStruct = kwargs.get("Folders", None)
+        self.save_file_name = kwargs.get("FileName", None)
+        self.path = kwargs.get("Path", None)
         return
     #endregion
-       
+
+    #region Save
+    def Save(self):
+        print(Fore.LIGHTGREEN_EX + "\t\t-------------------------------" + Style.RESET_ALL)
+        saveIPFilters = Writer(self.save_file_name + "-Filtered-IPS", self.capts.Save_IPS_Filtered(), "w+", infoname = "Filtered IPS", path = self.path)
+        saveIPFilters.Save_Info()
+
+        if self.do_fqdn is True:
+            saveFQDN = Writer(self.save_file_name + "-IPS-FQDN", self.capts.Save_IPS_Filtered(), "w+", infoname = "IPs to FQDN", path = self.path)
+            saveFQDN.Save_Info()
+        
+        if self.capts.Save_SSLTLS() is not None:
+            saveSSLTLS = Writer(self.save_file_name + "-SSL-TLS", self.capts.Save_SSLTLS(), "w+", infoname = "SSL/TLS", path = self.path)
+            saveSSLTLS.Save_Info()
+
+        if self.capts.Save_LLC() is not None:
+            saveLLC = Writer(self.save_file_name + "-LLC", self.capts.Save_LLC(), "w+", infoname = "LLC", path = self.path)
+            saveLLC.Save_Info()
+        
+        saveTCP = Writer(self.save_file_name + "-TCP", self.capts.Save_TCP(), "w+", infoname = "TCP", path = self.path)
+        saveTCP.Save_Info()
+
+        saveUDP = Writer(self.save_file_name + "-UDP", self.capts.Save_UDP(), "w+", infoname = "UDP", path = self.path)
+        saveUDP.Save_Info()
+
+        saveOtherProtcols = Writer(self.save_file_name + "-Other-Protocols", self.capts.Save_Other_Protocols(), "w+", infoname = "Other Protocols", path = self.path)
+        saveOtherProtcols.Save_Info()
+
+        if self.capts.Save_HttpInfo() is not None:
+            saveHttpInfo = Writer(self.save_file_name + "-Http-Info", self.capts.Save_HttpInfo(), "w+", infoname = "HTTP Info", path = self.path)
+            saveHttpInfo.Save_Info()
+
+        if self.capts.Save_HttpMalformedHeaders() is not None:
+            saveHttpMalformedHeaders = Writer(self.save_file_name + "-HTTP-Malformed-Headers", self.capts.Save_HttpMalformedHeaders(), "w+", infoname = "Http Malformed Headers", path = self.path)
+            saveHttpMalformedHeaders.Save_Info()
+
+        print("\n")
+        fileWriter = Writer(self.save_file_name, self.capts, "w+", infoname = "All Data", path = self.path)
+        fileWriter.Save()
+        return
+    #endregion
+
     #region Save Collector Information Returns String
     def Save_Collector(self):
         toSave = ""
