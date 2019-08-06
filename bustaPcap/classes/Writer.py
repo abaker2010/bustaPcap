@@ -23,7 +23,7 @@ class Writer():
     def Save_Totals(self):
         with open(self.path + "\\Totals\\" + self.filename + "-Directory-Totals" + ".txt", self.mode) as file:
             try:
-                file.write(self.data.Save_Collector())
+                file.write(str(self.data))
                 file.write("\n\n")
             except Exception as e:
                 print("Saving Error")

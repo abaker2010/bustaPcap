@@ -17,6 +17,33 @@ class Saver(Collector, Totals):
         self.path = kwargs.get("Path", None)
         return
     #endregion
+    
+    #region Override for __str__ this returns a string
+    def __str__(self):
+        toSave = ""
+        toSave += "%s\n" % self.Save_Header()
+        toSave += "\n%s" % self.Save_TCP()
+        
+        if self.Save_SSLTLS() is not None:
+            toSave += "\n%s" % self.Save_SSLTLS()
+
+        toSave += "\n%s" % self.Save_UDP()
+
+        if self.Save_LLC() is not None:
+            toSave += "\n%s" % self.Save_LLC()
+        
+        toSave += "\n%s" % self.Save_Other_Protocols()
+        toSave += "\n%s" % self.Save_IPS_Filtered()
+        if self.do_fqdn is True:
+            toSave += "\n%s" % self.Save_FQDN()
+
+        if self.Save_HttpInfo() is not None:
+            toSave += "\n%s" % self.Save_HttpInfo()
+
+        if self.Save_HttpMalformedHeaders() is not None:
+            toSave += "\n%s" % self.Save_HttpMalformedHeaders()
+        return toSave
+    #endregion
 
     #region Save
     def Save(self):
@@ -57,33 +84,6 @@ class Saver(Collector, Totals):
         fileWriter = Writer(self.save_file_name, str(self), "w+", infoname = "All Data", path = self.path)
         fileWriter.Save()
         return
-    #endregion
-
-    #region Override for __str__ this returns a string
-    def __str__(self):
-        toSave = ""
-        toSave += "%s\n" % self.Save_Header()
-        toSave += "\n%s" % self.Save_TCP()
-        
-        if self.Save_SSLTLS() is not None:
-            toSave += "\n%s" % self.Save_SSLTLS()
-
-        toSave += "\n%s" % self.Save_UDP()
-
-        if self.Save_LLC() is not None:
-            toSave += "\n%s" % self.Save_LLC()
-        
-        toSave += "\n%s" % self.Save_Other_Protocols()
-        toSave += "\n%s" % self.Save_IPS_Filtered()
-        if self.do_fqdn is True:
-            toSave += "\n%s" % self.Save_FQDN()
-
-        if self.Save_HttpInfo() is not None:
-            toSave += "\n%s" % self.Save_HttpInfo()
-
-        if self.Save_HttpMalformedHeaders() is not None:
-            toSave += "\n%s" % self.Save_HttpMalformedHeaders()
-        return toSave
     #endregion
 
     #region Save Header Returns String

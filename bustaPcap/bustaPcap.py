@@ -111,7 +111,7 @@ def Single_PCAP():
     captures = pyshark.FileCapture(options.pcap_file)
     folders = FolderStruct(os.path.dirname(os.path.abspath(__file__)))
     folders.Create_Report_Folder((os.path.basename(options.pcap_file)).split('.')[0])
-    capture = Collector(captures, FileName=(os.path.basename(options.pcap_file)), FolderName = os.path.dirname(os.path.abspath(__file__)))
+    capture = Collector(captures, FileName=(os.path.basename(options.pcap_file)), FolderName = os.path.dirname(os.path.abspath(__file__))).Rake()
     #caps = Print(capture, options.do_fqdn)
     
     if bool(options.verbose) is True:
@@ -149,7 +149,7 @@ def Dir_PCAPS():
         captures = pyshark.FileCapture(pcap)
         file = os.path.basename(pcap)
         print(Fore.LIGHTGREEN_EX + "\n\tProcessing File: " + Fore.LIGHTYELLOW_EX + file + Style.RESET_ALL)
-        capture = Collector(captures, FileName=file, FolderName = os.path.dirname(os.path.abspath(__file__)))
+        capture = Collector(captures, FileName=file, FolderName = os.path.dirname(os.path.abspath(__file__))).Rake()
         total_collection.Add_Collector(capture)
         print(Fore.LIGHTCYAN_EX + "\n\t  [?] " + Style.RESET_ALL + "Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - now) + " seconds.." + Style.RESET_ALL)
     
