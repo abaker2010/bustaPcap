@@ -54,13 +54,13 @@ class Saver(Collector, Totals):
             saveHttpMalformedHeaders.Save_Info()
 
         print("\n")
-        fileWriter = Writer(self.save_file_name, self.Save_Collector(), "w+", infoname = "All Data", path = self.path)
+        fileWriter = Writer(self.save_file_name + "Testing", str(self), "w+", infoname = "All Data", path = self.path)
         fileWriter.Save()
         return
     #endregion
 
-    #region Save Collector Information Returns String
-    def Save_Collector(self):
+    #region Override for __str__ this returns a string
+    def __str__(self):
         toSave = ""
         toSave += "%s\n" % self.Save_Header()
         toSave += "\n%s" % self.Save_TCP()
@@ -83,7 +83,6 @@ class Saver(Collector, Totals):
 
         if self.Save_HttpMalformedHeaders() is not None:
             toSave += "\n%s" % self.Save_HttpMalformedHeaders()
-
         return toSave
     #endregion
 
