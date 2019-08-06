@@ -21,40 +21,40 @@ class Saver(Collector, Totals):
     #region Save
     def Save(self):
         print(Fore.LIGHTGREEN_EX + "\t\t-------------------------------" + Style.RESET_ALL)
-        saveIPFilters = Writer(self.save_file_name + "-Filtered-IPS", self.capts.Save_IPS_Filtered(), "w+", infoname = "Filtered IPS", path = self.path)
+        saveIPFilters = Writer(self.save_file_name + "-Filtered-IPS", self.Save_IPS_Filtered(), "w+", infoname = "Filtered IPS", path = self.path)
         saveIPFilters.Save_Info()
 
         if self.do_fqdn is True:
-            saveFQDN = Writer(self.save_file_name + "-IPS-FQDN", self.capts.Save_IPS_Filtered(), "w+", infoname = "IPs to FQDN", path = self.path)
+            saveFQDN = Writer(self.save_file_name + "-IPS-FQDN", self.Save_IPS_Filtered(), "w+", infoname = "IPs to FQDN", path = self.path)
             saveFQDN.Save_Info()
         
-        if self.capts.Save_SSLTLS() is not None:
-            saveSSLTLS = Writer(self.save_file_name + "-SSL-TLS", self.capts.Save_SSLTLS(), "w+", infoname = "SSL/TLS", path = self.path)
+        if self.Save_SSLTLS() is not None:
+            saveSSLTLS = Writer(self.save_file_name + "-SSL-TLS", self.Save_SSLTLS(), "w+", infoname = "SSL/TLS", path = self.path)
             saveSSLTLS.Save_Info()
 
-        if self.capts.Save_LLC() is not None:
-            saveLLC = Writer(self.save_file_name + "-LLC", self.capts.Save_LLC(), "w+", infoname = "LLC", path = self.path)
+        if self.Save_LLC() is not None:
+            saveLLC = Writer(self.save_file_name + "-LLC", self.Save_LLC(), "w+", infoname = "LLC", path = self.path)
             saveLLC.Save_Info()
         
-        saveTCP = Writer(self.save_file_name + "-TCP", self.capts.Save_TCP(), "w+", infoname = "TCP", path = self.path)
+        saveTCP = Writer(self.save_file_name + "-TCP", self.Save_TCP(), "w+", infoname = "TCP", path = self.path)
         saveTCP.Save_Info()
 
-        saveUDP = Writer(self.save_file_name + "-UDP", self.capts.Save_UDP(), "w+", infoname = "UDP", path = self.path)
+        saveUDP = Writer(self.save_file_name + "-UDP", self.Save_UDP(), "w+", infoname = "UDP", path = self.path)
         saveUDP.Save_Info()
 
-        saveOtherProtcols = Writer(self.save_file_name + "-Other-Protocols", self.capts.Save_Other_Protocols(), "w+", infoname = "Other Protocols", path = self.path)
+        saveOtherProtcols = Writer(self.save_file_name + "-Other-Protocols", self.Save_Other_Protocols(), "w+", infoname = "Other Protocols", path = self.path)
         saveOtherProtcols.Save_Info()
 
-        if self.capts.Save_HttpInfo() is not None:
-            saveHttpInfo = Writer(self.save_file_name + "-Http-Info", self.capts.Save_HttpInfo(), "w+", infoname = "HTTP Info", path = self.path)
+        if self.Save_HttpInfo() is not None:
+            saveHttpInfo = Writer(self.save_file_name + "-Http-Info", self.Save_HttpInfo(), "w+", infoname = "HTTP Info", path = self.path)
             saveHttpInfo.Save_Info()
 
-        if self.capts.Save_HttpMalformedHeaders() is not None:
-            saveHttpMalformedHeaders = Writer(self.save_file_name + "-HTTP-Malformed-Headers", self.capts.Save_HttpMalformedHeaders(), "w+", infoname = "Http Malformed Headers", path = self.path)
+        if self.Save_HttpMalformedHeaders() is not None:
+            saveHttpMalformedHeaders = Writer(self.save_file_name + "-HTTP-Malformed-Headers", self.Save_HttpMalformedHeaders(), "w+", infoname = "Http Malformed Headers", path = self.path)
             saveHttpMalformedHeaders.Save_Info()
 
         print("\n")
-        fileWriter = Writer(self.save_file_name, self.capts, "w+", infoname = "All Data", path = self.path)
+        fileWriter = Writer(self.save_file_name, self.Save_Collector(), "w+", infoname = "All Data", path = self.path)
         fileWriter.Save()
         return
     #endregion
@@ -154,6 +154,7 @@ class Saver(Collector, Totals):
                 toSave += "\n\t\t\t%s -> %s" % (t, up["UDP"][t])
                 toSave += "\n\t\t\t{0:.2f}%".format((up["UDP"][t] / self.capts.totalUDP() * 100))
         else:
+            fp = self.capts.Capture_Filtered_Protocols()
             fp = self.capts.Capture_Filtered_Protocols()
             for t in self.capts.Capture_Filtered_Protocols()["UDP"].keys():
                 toSave += "\n\t\t\t%s -> %s" % (t, fp["UDP"][t])

@@ -35,7 +35,7 @@ class Writer():
         # changes needed to be made so that if the file exists the file is deleted and then re-created
         with open(self.path + self.filename + "-All-Info" + ".txt", self.mode) as file:
             try:
-                file.write(self.data.Save_Collector())
+                file.write(self.data)
                 file.write("\n\n")
             except Exception as e:
                 print("Saving Error")

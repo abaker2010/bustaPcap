@@ -120,7 +120,7 @@ def Single_PCAP():
     print(Fore.LIGHTCYAN_EX + "\n\t  [?] " + Style.RESET_ALL + "Total Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - now) + " seconds.." + Style.RESET_ALL)
 
     if options.save_file:
-        return Saver(capture, options.do_fqdn)
+        return capture
     else:
         return None
 #endregion
@@ -186,12 +186,12 @@ def Main():
                 folders = FolderStruct(os.path.dirname(os.path.abspath(__file__)))
                 folders.Create_Report_Folder(pkt.Get_Name().split('.')[0])
                 print("\t\t- %s : %s" % ("Saving data from", pkt.Get_Name()))
-                Saver(Saver(pkt, options.do_fqdn), options.do_fqdn, FileName=pkt.Get_Name().split('.')[0], Folders=folders, Path=folders.Get_Path()).Save()
+                Saver(pkt, options.do_fqdn, FileName=pkt.Get_Name().split('.')[0], Folders=folders, Path=folders.Get_Path()).Save()
             fileWriter = Writer(options.save_file, Saver(collected, options.do_fqdn), "a", path = folder.Get_Path())
             fileWriter.Save_Totals()
         else:
             folders = FolderStruct(os.path.dirname(os.path.abspath(__file__)))
-            folders.Create_Report_Folder(collected.capts.Get_Name().split('.')[0])
+            folders.Create_Report_Folder(collected.Get_Name().split('.')[0])
             Saver(collected, options.do_fqdn, FileName=options.save_file, Folders=folders, Path=folders.Get_Path()).Save()
     return
 #endregion
