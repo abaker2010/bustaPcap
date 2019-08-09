@@ -384,14 +384,10 @@ class Collector:
     def fqdn(self):
         if not self.ip_fqdn:
             for snt in self.ip_addresses_only():
-                ips = snt.split(".")
-                if ips[0] == "192":
-                    self.ip_fqdn[snt] = "Local"
-                else:
-                    dn = socket.getfqdn(snt)
-                    if dn is snt:
-                        self.ip_fqdn[snt] = "Not Found"
-                    else: 
-                        self.ip_fqdn[snt] = dn
+                dn = socket.getfqdn(snt)
+                if dn is snt:
+                    self.ip_fqdn[snt] = "Not Found"
+                else: 
+                    self.ip_fqdn[snt] = dn
         return self.ip_fqdn
     #endregion

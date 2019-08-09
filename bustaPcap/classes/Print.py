@@ -146,12 +146,12 @@ class Print:
             fp = self.collection.filtered_protocols()
             for t in fp["TCP"].keys():
                 print("\t\t\t%s -> %s" % (t, fp["TCP"][t]))
-                print("\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.collection.totalTCP() * 100)))
+                #print("\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.collection.totalTCP() * 100)))
         else:
             fp = self.collection.Capture_Filtered_Protocols()
             for t in fp["TCP"].keys():
                 print("\t\t\t%s -> %s" % (t, fp["TCP"][t]))
-                print("\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.collection.Total_TCP() * 100)))
+                #print("\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.collection.Total_TCP() * 100)))
         return
     #endregion
 
@@ -182,12 +182,12 @@ class Print:
             up = self.collection.filtered_protocols()
             for t in up["UDP"].keys():
                 print("\t\t\t%s -> %s" % (t, up["UDP"][t]))
-                print("\t\t\t{0:.2f}%".format((up["UDP"][t] / self.collection.totalUDP() * 100)))
+                #print("\t\t\t{0:.2f}%".format((up["UDP"][t] / self.collection.totalUDP() * 100)))
         else:
             fp = self.collection.Capture_Filtered_Protocols()
             for t in self.collection.Capture_Filtered_Protocols()["UDP"].keys():
                 print("\t\t\t%s -> %s" % (t, fp["UDP"][t]))
-                print("\t\t\t{0:.2f}%".format((fp["UDP"][t] / self.collection.Total_UDP() * 100)))
+                #print("\t\t\t{0:.2f}%".format((fp["UDP"][t] / self.collection.Total_UDP() * 100)))
         return
     #endregion
 
@@ -203,7 +203,7 @@ class Print:
                 print(header2)
                 for t in up["LLC"].keys():
                     print("\t\t\t%s -> %s" % (t, up["LLC"][t]))
-                    print("\t\t\t{0:.2f}%".format((up["LLC"][t] / self.collection.totalLLC() * 100)))
+                    #print("\t\t\t{0:.2f}%".format((up["LLC"][t] / self.collection.totalLLC() * 100)))
         else:
             fp = self.collection.Capture_Filtered_Protocols()
             if bool(fp["LLC"]) is True:
@@ -211,7 +211,7 @@ class Print:
                 print(header2)
                 for t in self.collection.Capture_Filtered_Protocols()["LLC"].keys():
                     print("\t\t\t%s -> %s" % (t, fp["LLC"][t]))
-                    print("\t\t\t{0:.2f}%".format((fp["LLC"][t] / self.collection.Total_LLC() * 100)))
+                    #print("\t\t\t{0:.2f}%".format((fp["LLC"][t] / self.collection.Total_LLC() * 100)))
         return
     #endregion
 
@@ -223,12 +223,12 @@ class Print:
             fp = self.collection.filtered_protocols()
             for t in fp["OTHER"].keys():
                 print("\t\t\t%s -> %s" % (t, fp["OTHER"][t]))
-                print("\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.collection.packet_count() * 100)))
+                #print("\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.collection.packet_count() * 100)))
         else:
             fp = self.collection.Capture_Filtered_Protocols()
             for t in self.collection.Capture_Filtered_Protocols()["OTHER"].keys():
                 print("\t\t\t%s -> %s" % (t, fp["OTHER"][t]))
-                print("\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.collection.Capture_Total_Count() * 100)))
+                #print("\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.collection.Capture_Total_Count() * 100)))
         return
     #endregion
 
