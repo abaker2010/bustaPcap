@@ -6,6 +6,7 @@ import socket
 import inspect
 import platform
 import re 
+import ipaddress
 import colorama 
 from colorama import Fore, Back, Style
 from classes.Writer import Writer
@@ -384,10 +385,15 @@ class Collector:
     def fqdn(self):
         if not self.ip_fqdn:
             for snt in self.ip_addresses_only():
-                dn = socket.getfqdn(snt)
-                if dn is snt:
-                    self.ip_fqdn[snt] = "Not Found"
+                ip = ipaddress.IPv4Address(snt)
+
+                if ip.is_private is True:
+                    self.ip_fqdn[snt] = "Local"
                 else: 
-                    self.ip_fqdn[snt] = dn
+                    dn = socket.getfqdn(snt)
+                    if dn is snt:
+                        self.ip_fqdn[snt] = "Not Found"
+                    else: 
+                        self.ip_fqdn[snt] = dn
         return self.ip_fqdn
     #endregion

@@ -17,7 +17,11 @@ from classes.Saver import Saver
 from classes.FolderStruct import FolderStruct
 
 #region Option Parse
-parser = OptionParser()
+
+help_text = """
+\tpython3.7 bustaPcap [options]
+"""
+parser = OptionParser(usage=help_text, version="%prog 1.0 -- beta")
 
 parser.add_option("-q", "--FQDN", dest="do_fqdn",
                   help="Usage: -q <FALSE|true>    This option finds Fully Qualified Domain Names with each IP found", default=False)
