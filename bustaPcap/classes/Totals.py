@@ -62,7 +62,6 @@ class Totals:
         proTotal = {"TCP" : {}, "UDP" : {}, "LLC" : {}, "OTHER" : {} }
         for c in self.captures:
             proto = c.filtered_protocols()
-
             for t, v in proto["TCP"].items():
                 if t in proTotal["TCP"]:
                     proTotal["TCP"][t] += v

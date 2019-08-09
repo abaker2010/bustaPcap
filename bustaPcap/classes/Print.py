@@ -157,14 +157,20 @@ class Print:
 
     #region Print SSL/TLS Information
     def Print_SSLTLS(self):
-        print(Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "SSL/TLS Version" + Style.RESET_ALL)
-        print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
+        header1 = Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "SSL/TLS Version" + Style.RESET_ALL
+        header2 = Fore.GREEN + "\t\t-------------" + Style.RESET_ALL
         if type(self.collection) is Collector:
-            for k, v in self.collection.ssltls().items():
-                print("\t\t\t%s -> %s" % (k, v))
+            if bool(self.collection.ssltls()) is True:
+                print(header1)
+                print(header2)
+                for k, v in self.collection.ssltls().items():
+                    print("\t\t\t%s -> %s" % (k, v))
         else:
-            for k, v in self.collection.Capture_TLS().items():
-                print("\t\t\t%s -> %s" % (k, v))
+            if bool(self.collection.Capture_TLS()) is True:
+                print(header1)
+                print(header2)
+                for k, v in self.collection.Capture_TLS().items():
+                    print("\t\t\t%s -> %s" % (k, v))
         return
     #endregion
 
@@ -187,18 +193,25 @@ class Print:
 
     #region Print LLC Information
     def Print_LLC(self):
-        print(Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "LLC" + Style.RESET_ALL)
-        print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
+        header1 = Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "LLC" + Style.RESET_ALL
+        header2 = Fore.GREEN + "\t\t-------------" + Style.RESET_ALL
+
         if type(self.collection) is Collector:
             up = self.collection.filtered_protocols()
-            for t in up["LLC"].keys():
-                print("\t\t\t%s -> %s" % (t, up["LLC"][t]))
-                print("\t\t\t{0:.2f}%".format((up["LLC"][t] / self.collection.totalLLC() * 100)))
+            if bool(up["LLC"]) is True:
+                print(header1)
+                print(header2)
+                for t in up["LLC"].keys():
+                    print("\t\t\t%s -> %s" % (t, up["LLC"][t]))
+                    print("\t\t\t{0:.2f}%".format((up["LLC"][t] / self.collection.totalLLC() * 100)))
         else:
             fp = self.collection.Capture_Filtered_Protocols()
-            for t in self.collection.Capture_Filtered_Protocols()["LLC"].keys():
-                print("\t\t\t%s -> %s" % (t, fp["LLC"][t]))
-                print("\t\t\t{0:.2f}%".format((fp["LLC"][t] / self.collection.Total_LLC() * 100)))
+            if bool(fp["LLC"]) is True:
+                print(header1)
+                print(header2)
+                for t in self.collection.Capture_Filtered_Protocols()["LLC"].keys():
+                    print("\t\t\t%s -> %s" % (t, fp["LLC"][t]))
+                    print("\t\t\t{0:.2f}%".format((fp["LLC"][t] / self.collection.Total_LLC() * 100)))
         return
     #endregion
 
@@ -251,8 +264,8 @@ class Print:
 
     #region Print FQDN Information
     def Print_FQDN(self):
-        print("\n\t\t[-] IP Addresses -> FQDN")
-        print("\t\t-------------")
+        print(Fore.GREEN + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + " IP Addresses -> FQDN" + Style.RESET_ALL)
+        print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
         if type(self.collection) is Collector:
             for k, v in sorted(self.collection.fqdn().items()):
                 print("\t\t\t%s : %s" % (k, v))

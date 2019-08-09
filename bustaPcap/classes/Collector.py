@@ -58,7 +58,7 @@ class Collector:
             uri = None
             try:
                 src = self.Check_SRC(pkt)
-            except:
+            except Exception as e:
                 pass
             
             for p in pkt.layers:
@@ -98,6 +98,8 @@ class Collector:
                     print("Media Layer Error")
                     print(e)
                     pass
+
+            self.Check_Protocol(layerName)
         except Exception as e:
             print("Layer Parser Error")
             print(e)
@@ -107,7 +109,12 @@ class Collector:
 
     #region Check Source 
     def Check_SRC(self, pkt):
-        src = pkt.ip.src + " -> " + pkt.ip.dst
+        src = ""
+        try:
+            src = pkt.ip.src + " -> " + pkt.ip.dst
+        except Exception as e:
+            pass
+
         if src in self.ipAddresses:
             self.ipAddresses[src] += 1
         else:
@@ -349,27 +356,27 @@ class Collector:
     def ip_addresses_only(self):
         ipList = []
         for k in self.ipAddresses.keys():
-            ips = k.split(" -> ")
-            if ips[0] not in ipList:
-                ipList.append(ips[0])
-            if ips[1] not in ipList:
-                ipList.append(ips[1])
+            try:
+                ips = k.split(" -> ")
+                if ips[0] != '':
+                    if ips[0] not in ipList:
+                        ipList.append(ips[0])
+                if ips[1] == '':
+                    if ips[1] not in ipList:
+                        ipList.append(ips[1])
+            except:
+                pass
         return ipList
     #endregion
 
     #region Get Filtered IP Addresses Returns Dictionary
     def ip_addresses_filtered(self):
         newDict = {}
-        for k in self.ipAddresses.keys():
-            ips = k.split(" -> ")
-            if k not in newDict:
-                newDict[k] = self.ipAddresses[k]
-                rev = ips[1] + " -> " + ips[0]
-                try:
-                    newDict[rev] = self.ipAddresses[rev]
-                except:
-                    newDict[rev] = 0
-                pass
+
+        for k in self.ipAddresses.items():
+            newDict[k[0]] = k[1]
+            kSplit = k[0].split(" -> ")
+            rev = kSplit[-1] + " -> " + kSplit[0]
         return newDict
     #endregion
 

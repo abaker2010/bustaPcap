@@ -52,7 +52,7 @@ class Saver(Collector, Totals):
         saveIPFilters.Save_Info()
 
         if self.do_fqdn is True:
-            saveFQDN = Writer(self.save_file_name + "-IPS-FQDN", self.Save_IPS_Filtered(), "w+", infoname = "IPs to FQDN", path = self.path)
+            saveFQDN = Writer(self.save_file_name + "-IPS-FQDN", self.Save_FQDN(), "w+", infoname = "IPs to FQDN", path = self.path)
             saveFQDN.Save_Info()
         
         if self.Save_SSLTLS() is not None:
@@ -236,6 +236,21 @@ class Saver(Collector, Totals):
         return toSave 
     #endregion
     
+    #region Save FQDN Information Returns String
+    def Save_FQDN(self):
+        toSave = ""
+        toSave += "\n\t\t[-] Fully Quailfied Domain Name (FQDN)"
+        toSave += "\n\t\t-------------"
+        if type(self.capts) is Collector:
+            for fqdn in self.capts.fqdn().items():
+                toSave += "\n\t\t\t" + fqdn[0] + " -> " + fqdn[1]
+        else:
+            for fqdn in self.capts.Capture_IP_FQDN().items():
+                toSave += "\n\t\t\t" + fqdn[0] + " -> " + fqdn[1]
+
+        return toSave
+    #endregion
+
     #region Save Http Info Returns String
     def Save_HttpInfo(self):
         toSave = ""
