@@ -19,24 +19,28 @@ from classes.FolderStruct import FolderStruct
 #region Option Parse
 
 help_text = """
-\tpython3.7 bustaPcap [options]
+\tpython3.7 bustaPcap.py [options]
+Example:\n
+\tpython3.7 bustaPcap.py -p ./single.pcap -q -o
+\tpython3.7 bustaPcap.py -d ./dir -q True -o
+\tpython3.7 bustaPcap.py -d ./dir -q True -o -q -v
 """
 parser = OptionParser(usage=help_text, version="%prog 1.0 -- beta")
 
-parser.add_option("-q", "--FQDN", dest="do_fqdn",
-                  help="Usage: -q <FALSE|true>    This option finds Fully Qualified Domain Names with each IP found", default=False)
+parser.add_option("-d", "--DIR", dest="dir_path", metavar="DIR",
+                  help="Usage: -d|--DIR <DIR>   Directory path that holds all PCAP files for parsing. Allowed files within are .pcap, .cap, .pcapng")
 
-parser.add_option("-o", "--OUTPUT", dest="save_file",
-                  help="Usage: -o <filename>    This option saves the output into the provided filename")
+parser.add_option("-p", "--PCAP", dest="pcap_file", metavar="FILENAME",
+                  help="Usage: -p|--PCAP <PCAPFILE>   PCAP File that will be parsed. Include whole destination path: Allowed file types are: .pcap, .cap, .pcapng")
 
-parser.add_option("-d", "--DIR", dest="dir_path",
-                  help="Directory path that holds all PCAP files for parsing. Allowed files within are .pcap, .cap, .pcapng")
+parser.add_option("-q", "--FQDN", dest="do_fqdn", action="store_true",
+                  help="Usage: -q|--FQDN   This option finds Fully Qualified Domain Names with each IP found")
 
-parser.add_option("-p", "--PCAP", dest="pcap_file",
-                  help="PCAP File that will be parsed. Include whole destination path: Allowed file types are: .pcap, .cap, .pcapng")
+parser.add_option("-v", "--VERBOSE", dest="verbose", action="store_true",
+                  help="Usage: -v|--VERBOSE   Verbose setting allowing for optional printing to screen")
 
-parser.add_option("-v", "--VERBOSE", dest="verbose",
-                  help="Verbose setting allowing for optional printing to screen", default=False)
+parser.add_option("-o", "--OUTPUT", dest="save_file", action="store_true",
+                  help="Usage: -o|--OUTPUT   This option saves allows to save the output")
 
 options, args = parser.parse_args()
 #endregion
@@ -64,6 +68,7 @@ def Print_Title():
 
 #region Arg Checker
 def Arg_Check():
+    print(options.do_fqdn)
     if options.pcap_file:
         if not options.pcap_file.endswith('.pcap') | options.pcap_file.endswith('.cap') | options.pcap_file.endswith('.pcapng'):
             print(Fore.RED + "\t[!] " + Style.RESET_ALL + "File type is not correct")
@@ -77,18 +82,18 @@ def Arg_Check():
             exit()
 
     if options.do_fqdn:
-        if options.do_fqdn.lower() == "true":
+        if options.do_fqdn is True:
             options.do_fqdn = True
-        elif options.do_fqdn.lower() == "false":
+        elif options.do_fqdn is False:
             options.do_fqdn = False
         else:
             print(Fore.RED + "\t[!] " + Stlye.RESET_ALL + "Invalid -q option! Accepts True or False")
             exit()
 
     if options.verbose:
-        if options.verbose.lower() == "true":
+        if options.verbose is True:
             options.verbose = True
-        elif options.verbose.lower() == "false":
+        elif options.verbose is None:
             options.verbose = False
         else:
             print(Fore.RED + "\t[!] " + Stlye.RESET_ALL + "Invalid -v option! Accepts True or False")
@@ -191,12 +196,12 @@ def Main():
                 folders.Create_Report_Folder(pkt.Get_Name().split('.')[0])
                 print("\t\t- %s : %s" % ("Saving data from", pkt.Get_Name()))
                 Saver(pkt, options.do_fqdn, FileName=pkt.Get_Name().split('.')[0], Folders=folders, Path=folders.Get_Path()).Save()
-            fileWriter = Writer(options.save_file, Saver(collected, options.do_fqdn), "a", path = folder.Get_Path())
+            fileWriter = Writer(os.path.basename(options.dir_path), Saver(collected, options.do_fqdn), "a", path = folder.Get_Path())
             fileWriter.Save_Totals()
         else:
             folders = FolderStruct(os.path.dirname(os.path.abspath(__file__)))
             folders.Create_Report_Folder(collected.Get_Name().split('.')[0])
-            Saver(collected, options.do_fqdn, FileName=options.save_file, Folders=folders, Path=folders.Get_Path()).Save()
+            Saver(collected, options.do_fqdn, FileName=collected.Get_Name(), Folders=folders, Path=folders.Get_Path()).Save()
     return
 #endregion
 
