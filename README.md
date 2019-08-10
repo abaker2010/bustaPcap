@@ -59,5 +59,6 @@ Usage
 
 	Pip Requirements
 	-----------------------
-		- pyshark
-		- colorama
+		- colorama  0.4.1
+		- pathlib   1.0.1
+		- pyshark   0.4.2.3
