@@ -1,7 +1,11 @@
 # bustaPcap
+[![Generic badge](https://img.shields.io/badge/Python-3.7.3-blue.svg)](https://www.python.org/downloads/release/python-373/)
+[![Generic badge](https://img.shields.io/badge/build-passing-GREEN.svg)]()
+[![Generic badge](https://img.shields.io/badge/version-beta_1.0-GREEN.svg)]()
+[![Generic badge](https://img.shields.io/badge/wiki-in_progress-yellow.svg)](https://github.com/abaker2010/bustaPcap/wiki)
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/abaker2010/bustaPcap/blob/master/LICENSE)
 
-Built with Python 3.7.3
------------------------
+
 Creators 
 -----------------------
 Elliot Kjerstad and Aaron Baker 
