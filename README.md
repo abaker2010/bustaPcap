@@ -29,9 +29,11 @@ Usage
 
 	Command Arguments
 	-----------------------
-	    --version             show program's version number and exit
+		--version
+							show program's version number and exit
 
-		-h, --help            show this help message and exit
+		-h, --help
+							show this help message and exit
 
 		-d  --DIR=DIR_PATH
 							Directory path that holds all PCAP files for parsing.
@@ -46,7 +48,8 @@ Usage
 							Usage: -q <FALSE|true>    This option finds Fully
 							Qualified Domain Names with each IP found
 
-		-v, --VERBOSE       Usage: -v|--VERBOSE   Verbose setting allowing for
+		-v, --VERBOSE
+							Usage: -v|--VERBOSE   Verbose setting allowing for
 							optional printing to screen
 
 		-o  --OUTPUT=SAVE_FILE
