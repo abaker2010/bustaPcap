@@ -17,20 +17,21 @@ Overview
 Usage
 -----------------------
 
-	python3.7 PCAP.py
+	python3.7 bustaPcap.py [OPTIONS]
+
+
+	Example:
+	-----------------------
+        python3.7 bustaPcap.py -p ./single.pcap -q -o
+        python3.7 bustaPcap.py -d ./dir -q True -o
+        python3.7 bustaPcap.py -d ./dir -q True -o -q -v
 
 
 	Command Arguments
 	-----------------------
+	    --version             show program's version number and exit
+
 		-h, --help            show this help message and exit
-
-		-q  --FQDN=DO_FQDN
-							Usage: -q <FALSE|true>    This option finds Fully
-							Qualified Domain Names with each IP found
-
-		-o  --OUTPUT=SAVE_FILE
-							Usage: -o <filename>    This option saves the output
-							into the provided filename
 
 		-d  --DIR=DIR_PATH
 							Directory path that holds all PCAP files for parsing.
@@ -41,6 +42,19 @@ Usage
 							destination path: Allowed file types are: .pcap, .cap,
 							.pcapng
 
+		-q  --FQDN=DO_FQDN
+							Usage: -q <FALSE|true>    This option finds Fully
+							Qualified Domain Names with each IP found
+
+		-v, --VERBOSE       Usage: -v|--VERBOSE   Verbose setting allowing for
+							optional printing to screen
+
+		-o  --OUTPUT=SAVE_FILE
+							Usage: -o <filename>    This option saves the output
+							into the provided filename
+
+
 	Pip Requirements
 	-----------------------
 		- pyshark
+		- colorama
