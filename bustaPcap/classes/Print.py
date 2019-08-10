@@ -56,12 +56,12 @@ class Print:
         if type(self.collection) is Collector:
             print(Fore.LIGHTGREEN_EX + "\n\n\tProcessed Information: " + Fore.LIGHTYELLOW_EX + self.collection.Get_Name() + Style.RESET_ALL)
             print(Fore.GREEN + "\t-----------------------" + Style.RESET_ALL)
-            print(Fore.LIGHTCYAN_EX + "\n\t\t[?] " + Fore.LIGHTGREEN_EX + "Total Packets : " + Fore.LIGHTYELLOW_EX + str(self.collection.packet_count()) + Style.RESET_ALL)
+            print(Fore.LIGHTCYAN_EX + "\n\t[?] " + Fore.LIGHTGREEN_EX + "Total Packets : " + Fore.LIGHTGREEN_EX + str(self.collection.packet_count()) + Style.RESET_ALL)
         else:
-            print("\n\t%s" % ("Total Directory Information"))
+            print(Fore.LIGHTGREEN_EX + "\n\tTotal Directory Information" + Style.RESET_ALL)
             print(Fore.GREEN + "\t-----------------------" + Style.RESET_ALL)
-            print(Fore.LIGHTCYAN_EX + "\n\t\t[?] " + Style.RESET_ALL + "Total Packets : " + Fore.LIGHTYELLOW_EX + str(self.collection.Capture_Total_Count()) + Style.RESET_ALL)
-        print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
+            print(Fore.LIGHTCYAN_EX + "\n\t[?] " + Fore.LIGHTYELLOW_EX + "Total Packets : " + Fore.LIGHTGREEN_EX + str(self.collection.Capture_Total_Count()) + Style.RESET_ALL)
+        print(Fore.GREEN + "\t-------------" + Style.RESET_ALL)
         return
     #endregion
 
@@ -139,55 +139,48 @@ class Print:
 
     #region Print TCP Information
     def Print_TCP(self):
-        #print("\t\t-------------")
-        print(Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "TCP" + Style.RESET_ALL)
-        print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
         if type(self.collection) is Collector:
             fp = self.collection.filtered_protocols()
-            for t in fp["TCP"].keys():
-                print("\t\t\t%s -> %s" % (t, fp["TCP"][t]))
-                #print("\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.collection.totalTCP() * 100)))
         else:
             fp = self.collection.Capture_Filtered_Protocols()
-            for t in fp["TCP"].keys():
-                print("\t\t\t%s -> %s" % (t, fp["TCP"][t]))
-                #print("\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.collection.Total_TCP() * 100)))
+
+        print(Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "TCP : " + Fore.LIGHTGREEN_EX + str(sum(fp["TCP"].values())) + Style.RESET_ALL)
+        print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
+            
+        for t in fp["TCP"].keys():
+            print(Fore.LIGHTYELLOW_EX + "\t\t\t" + t + Fore.LIGHTGREEN_EX +  " -> " + Fore.CYAN + str(fp["TCP"][t]) + Style.RESET_ALL)
+            #print("\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.collection.Total_TCP() * 100)))
         return
     #endregion
 
     #region Print SSL/TLS Information
     def Print_SSLTLS(self):
-        header1 = Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "SSL/TLS Version" + Style.RESET_ALL
-        header2 = Fore.GREEN + "\t\t-------------" + Style.RESET_ALL
         if type(self.collection) is Collector:
-            if bool(self.collection.ssltls()) is True:
-                print(header1)
-                print(header2)
-                for k, v in self.collection.ssltls().items():
-                    print("\t\t\t%s -> %s" % (k, v))
+            sslTLS = self.collection.ssltls()
         else:
-            if bool(self.collection.Capture_TLS()) is True:
-                print(header1)
-                print(header2)
-                for k, v in self.collection.Capture_TLS().items():
-                    print("\t\t\t%s -> %s" % (k, v))
+            sslTLS = self.collection.Capture_TLS()
+
+
+        if bool(sslTLS) is True:
+            print(Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "SSL/TLS Version : " + Fore.LIGHTGREEN_EX + str(sum(sslTLS.values())) + Style.RESET_ALL)
+            print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
+            for k, v in sslTLS.items():
+                print(Fore.LIGHTYELLOW_EX + "\t\t\t" + k + Fore.LIGHTGREEN_EX + " -> " + Fore.CYAN + str(v) + Style.RESET_ALL)
         return
     #endregion
 
     #region Print UDP Information
     def Print_UDP(self):
-        print(Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "UDP" + Style.RESET_ALL)
-        print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
         if type(self.collection) is Collector:
-            up = self.collection.filtered_protocols()
-            for t in up["UDP"].keys():
-                print("\t\t\t%s -> %s" % (t, up["UDP"][t]))
-                #print("\t\t\t{0:.2f}%".format((up["UDP"][t] / self.collection.totalUDP() * 100)))
+            fp = self.collection.filtered_protocols()
         else:
             fp = self.collection.Capture_Filtered_Protocols()
-            for t in self.collection.Capture_Filtered_Protocols()["UDP"].keys():
-                print("\t\t\t%s -> %s" % (t, fp["UDP"][t]))
-                #print("\t\t\t{0:.2f}%".format((fp["UDP"][t] / self.collection.Total_UDP() * 100)))
+        
+        print(Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "UDP : " + Fore.LIGHTGREEN_EX + str(sum(fp["UDP"].values())) + Style.RESET_ALL)
+        print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
+
+        for t in fp["UDP"].keys():
+            print(Fore.LIGHTYELLOW_EX + "\t\t\t" + t + Fore.LIGHTGREEN_EX + " -> " + Fore.CYAN + str(fp["UDP"][t]) + Style.RESET_ALL)
         return
     #endregion
 
@@ -221,14 +214,11 @@ class Print:
         print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
         if type(self.collection) is Collector:
             fp = self.collection.filtered_protocols()
-            for t in fp["OTHER"].keys():
-                print("\t\t\t%s -> %s" % (t, fp["OTHER"][t]))
-                #print("\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.collection.packet_count() * 100)))
         else:
             fp = self.collection.Capture_Filtered_Protocols()
-            for t in self.collection.Capture_Filtered_Protocols()["OTHER"].keys():
-                print("\t\t\t%s -> %s" % (t, fp["OTHER"][t]))
-                #print("\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.collection.Capture_Total_Count() * 100)))
+
+        for t in fp["OTHER"].keys():
+            print(Fore.LIGHTYELLOW_EX + "\t\t\t" + t + Fore.LIGHTGREEN_EX + " -> " + Fore.CYAN + str(fp["OTHER"][t]) + Style.RESET_ALL)
         return
     #endregion
 
@@ -245,20 +235,18 @@ class Print:
     def Print_IPS_Filtered(self):
         print(Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "IP Addresses (Filtered)" + Style.RESET_ALL)
         print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
+        evn = 0
         if type(self.collection) is Collector:
-            evn = 0
-            for snt in self.collection.ip_addresses_filtered().keys():
-                print("\t\t\t%s : %s" % (snt, self.collection.ip_addresses_filtered()[snt]))
-                evn += 1
-                if (evn % 2) == 0:
-                    print("\n")
+            collected = self.collection.ip_addresses_filtered()
         else:
-            evn = 0
-            for snt in self.collection.Capture_IP_Filtered().keys():
-                print("\t\t\t%s : %s" % (snt, self.collection.Capture_IP_Filtered()[snt]))
-                evn += 1
-                if (evn % 2) == 0:
-                    print("\n")
+            collected = self.collection.Capture_IP_Filtered()
+        
+        for snt in collected.keys():
+            ips = snt.split(" -> ")
+            print(Fore.LIGHTYELLOW_EX + "\t\t\t" + ips[0] + Fore.LIGHTGREEN_EX + " -> " + Fore.LIGHTYELLOW_EX + ips[-1] + Fore.LIGHTWHITE_EX + " : " + Fore.CYAN + str(collected[snt]) + Style.RESET_ALL)
+            evn += 1
+            if (evn % 2) == 0:
+                print("\n")
         return
     #endregion
 

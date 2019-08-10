@@ -68,7 +68,6 @@ def Print_Title():
 
 #region Arg Checker
 def Arg_Check():
-    print(options.do_fqdn)
     if options.pcap_file:
         if not options.pcap_file.endswith('.pcap') | options.pcap_file.endswith('.cap') | options.pcap_file.endswith('.pcapng'):
             print(Fore.RED + "\t[!] " + Style.RESET_ALL + "File type is not correct")
