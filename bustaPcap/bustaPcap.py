@@ -125,7 +125,7 @@ def Single_PCAP():
     if bool(options.verbose) is True:
         Print(capture, options.do_fqdn).Print_All()    
     
-    print(Fore.LIGHTCYAN_EX + "\n\t  [?] " + Style.RESET_ALL + "Total Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - now) + " seconds.." + Style.RESET_ALL)
+    print(Fore.LIGHTCYAN_EX + "\n\t  [?] " + Fore.LIGHTGREEN_EX + "Total Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - now) + " seconds.." + Style.RESET_ALL)
 
     if options.save_file:
         return capture
@@ -164,7 +164,7 @@ def Dir_PCAPS():
     if bool(options.verbose) is True:
         Print(total_collection, options.do_fqdn).Print_All()
 
-    print(Fore.LIGHTCYAN_EX + "\t  [?] " + Style.RESET_ALL + "Total Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - totaltime) + " seconds.." + Style.RESET_ALL)
+    print(Fore.LIGHTCYAN_EX + "\n\t  [?] " + Fore.LIGHTGREEN_EX + "Total Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - totaltime) + " seconds.." + Style.RESET_ALL)
 
     if options.save_file:
         return total_collection
