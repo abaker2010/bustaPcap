@@ -255,10 +255,11 @@ class Print:
         print(Fore.GREEN + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + " IP Addresses -> FQDN" + Style.RESET_ALL)
         print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
         if type(self.collection) is Collector:
-            for k, v in sorted(self.collection.fqdn().items()):
-                print("\t\t\t%s : %s" % (k, v))
+            fqdn = sorted(self.collection.fqdn().items())
         else:
-            for k, v in sorted(self.collection.Capture_IP_FQDN().items()):
-                print("\t\t\t%s : %s" % (k, v))
+            fqdn = sorted(self.collection.Capture_IP_FQDN().items())
+            
+        for k, v in fqdn:
+            print(Fore.LIGHTYELLOW_EX + "\t\t\t" + k + Fore.LIGHTWHITE_EX + " : " + Fore.CYAN + v + Style.RESET_ALL)
         return
     #endregion
