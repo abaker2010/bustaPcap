@@ -149,7 +149,7 @@ class Print:
             
         for t in fp["TCP"].keys():
             print(Fore.LIGHTYELLOW_EX + "\t\t\t" + t + Fore.LIGHTGREEN_EX +  " -> " + Fore.CYAN + str(fp["TCP"][t]) + Style.RESET_ALL)
-            #print("\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.collection.Total_TCP() * 100)))
+            print("\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.collection.packet_count() * 100)))
         return
     #endregion
 
@@ -166,6 +166,7 @@ class Print:
             print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
             for k, v in sslTLS.items():
                 print(Fore.LIGHTYELLOW_EX + "\t\t\t" + k + Fore.LIGHTGREEN_EX + " -> " + Fore.CYAN + str(v) + Style.RESET_ALL)
+                printf("\t\t\t{:.2f}%".format((v / (sum(sslTLS.values())) * 100)))
         return
     #endregion
 
@@ -181,6 +182,7 @@ class Print:
 
         for t in fp["UDP"].keys():
             print(Fore.LIGHTYELLOW_EX + "\t\t\t" + t + Fore.LIGHTGREEN_EX + " -> " + Fore.CYAN + str(fp["UDP"][t]) + Style.RESET_ALL)
+            print("\t\t\t{0:.2f}%".format((fp["UDP"][t] / self.collection.packet_count() * 100)))
         return
     #endregion
 
@@ -196,7 +198,7 @@ class Print:
                 print(header2)
                 for t in up["LLC"].keys():
                     print("\t\t\t%s -> %s" % (t, up["LLC"][t]))
-                    #print("\t\t\t{0:.2f}%".format((up["LLC"][t] / self.collection.totalLLC() * 100)))
+                    print("\t\t\t{0:.2f}%".format((up["LLC"][t] / self.collection.packet_count() * 100)))
         else:
             fp = self.collection.Capture_Filtered_Protocols()
             if bool(fp["LLC"]) is True:
@@ -204,7 +206,7 @@ class Print:
                 print(header2)
                 for t in self.collection.Capture_Filtered_Protocols()["LLC"].keys():
                     print("\t\t\t%s -> %s" % (t, fp["LLC"][t]))
-                    #print("\t\t\t{0:.2f}%".format((fp["LLC"][t] / self.collection.Total_LLC() * 100)))
+                    print("\t\t\t{0:.2f}%".format((fp["LLC"][t] / self.collection.packet_count() * 100)))
         return
     #endregion
 
@@ -219,6 +221,7 @@ class Print:
 
         for t in fp["OTHER"].keys():
             print(Fore.LIGHTYELLOW_EX + "\t\t\t" + t + Fore.LIGHTGREEN_EX + " -> " + Fore.CYAN + str(fp["OTHER"][t]) + Style.RESET_ALL)
+            print("\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.collection.packet_count() * 100)))
         return
     #endregion
 

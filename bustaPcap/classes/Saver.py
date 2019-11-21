@@ -110,12 +110,12 @@ class Saver(Collector, Totals):
             fp = self.capts.filtered_protocols()
             for t in fp["TCP"].keys():
                 toSave += "\n\t\t\t%s -> %s" % (t, fp["TCP"][t])
-                #toSave += "\n\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.capts.totalTCP() * 100))
+                toSave += "\n\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.capts.packet_count() * 100))
         else:
             fp = self.capts.Capture_Filtered_Protocols()
             for t in fp["TCP"].keys():
                 toSave += "\n\t\t\t%s -> %s" % (t, fp["TCP"][t])
-                #toSave += "\n\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.capts.Total_TCP() * 100))
+                toSave += "\n\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.capts.Capture_Total_Count() * 100))
         return toSave
     #endregion
     
@@ -130,11 +130,13 @@ class Saver(Collector, Totals):
                 toSave += header
                 for k, v in self.capts.ssltls().items():
                     toSave += "\n\t\t\t%s -> %s" % (k, v)
+                    toSave += "\n\t\t\t{0:.2f}%".format((v / (sum(self.capts.ssltls().values())) * 100))
         else:
             if bool(self.capts.Capture_TLS()) is True:
                 toSave += header
                 for k, v in self.capts.Capture_TLS().items():
                     toSave += "\n\t\t\t%s -> %s" % (k, v)
+                    toSave += "\n\t\t\t{0:.2f}%".format((v / (sum(self.capts.Capture_TLS.values())) * 100))
         if toSave is not "":
             return toSave
         else:
@@ -151,13 +153,13 @@ class Saver(Collector, Totals):
             up = self.capts.filtered_protocols()
             for t in up["UDP"].keys():
                 toSave += "\n\t\t\t%s -> %s" % (t, up["UDP"][t])
-                #toSave += "\n\t\t\t{0:.2f}%".format((up["UDP"][t] / self.capts.totalUDP() * 100))
+                toSave += "\n\t\t\t{0:.2f}%".format((up["UDP"][t] / self.capts.packet_count() * 100))
         else:
             fp = self.capts.Capture_Filtered_Protocols()
             fp = self.capts.Capture_Filtered_Protocols()
             for t in self.capts.Capture_Filtered_Protocols()["UDP"].keys():
                 toSave += "\n\t\t\t%s -> %s" % (t, fp["UDP"][t])
-                #toSave += "\n\t\t\t{0:.2f}%".format((fp["UDP"][t] / self.capts.Total_UDP() * 100))
+                toSave += "\n\t\t\t{0:.2f}%".format((fp["UDP"][t] / self.capts.Capture_Total_Count() * 100))
         return toSave
     #endregion
     
@@ -172,14 +174,14 @@ class Saver(Collector, Totals):
                 toSave += header
                 for t in up["LLC"].keys():
                     toSave += "\n\t\t\t%s -> %s" % (t, up["LLC"][t])
-                    #toSave += "\n\t\t\t{0:.2f}%".format((up["LLC"][t] / self.capts.totalLLC() * 100))
+                    toSave += "\n\t\t\t{0:.2f}%".format((up["LLC"][t] / self.capts.totalLLC() * 100))
         else:
             fp = self.capts.Capture_Filtered_Protocols()
             if bool(fp["LLC"]) is True:
                 toSave += header
                 for t in fp["LLC"].keys():
                     toSave += "\n\t\t\t%s -> %s" % (t, fp["LLC"][t])
-                    #toSave += "\n\t\t\t{0:.2f}%".format((fp["LLC"][t] / self.capts.Total_LLC() * 100))
+                    toSave += "\n\t\t\t{0:.2f}%".format((fp["LLC"][t] / self.capts.Capture_Total_Count() * 100))
         if toSave is not "":
             return toSave
         else:
@@ -195,12 +197,12 @@ class Saver(Collector, Totals):
             fp = self.capts.filtered_protocols()
             for t in fp["OTHER"].keys():
                 toSave += "\n\t\t\t%s -> %s" % (t, fp["OTHER"][t])
-                #toSave += "\n\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.capts.packet_count() * 100))
+                toSave += "\n\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.capts.packet_count() * 100))
         else:
             fp = self.capts.Capture_Filtered_Protocols()
             for t in self.capts.Capture_Filtered_Protocols()["OTHER"].keys():
                 toSave += "\n\t\t\t%s -> %s" % (t, fp["OTHER"][t])
-                #toSave += "\n\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.capts.Capture_Total_Count() * 100))
+                toSave += "\n\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.capts.Capture_Total_Count() * 100))
         return toSave
     #endregions
     
