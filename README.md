@@ -39,7 +39,7 @@ Requirements
 Usage
 -----------------------
 
-	python3.7 bustaPcap.py [OPTIONS]
+	python3.8 bustaPcap.py [OPTIONS]
 
 
 	Example:
