@@ -27,7 +27,7 @@ Requirements
 		- pathlib   1.0.1
 		- pyshark   0.4.2.3
 	
-	* (Recommended) Needed requirements can be installed using the `python -m pip install -r requirements` command
+	* (Recommended) Needed requirements can be installed using the `python3.8 -m pip install -r requirements` command
 
 	Extra Installed Software : 
 	-----------------------
