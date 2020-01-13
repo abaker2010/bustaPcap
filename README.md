@@ -45,8 +45,8 @@ Usage
 	Example:
 	-----------------------
         python3.7 bustaPcap.py -p ./single.pcap -q -o
-        python3.7 bustaPcap.py -d ./dir -q True -o
-        python3.7 bustaPcap.py -d ./dir -q True -o -q -v
+        python3.7 bustaPcap.py -d ./dir -q -o
+        python3.7 bustaPcap.py -d ./dir -o -q -v
 
 
 	Command Arguments
@@ -75,5 +75,5 @@ Usage
 							optional printing to screen
 
 		-o  --OUTPUT=SAVE_FILE
-							Usage: -o <filename>    This option saves the output
+							Usage: -o This option saves the output
 							into the provided filename
