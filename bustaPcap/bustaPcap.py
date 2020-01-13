@@ -185,7 +185,7 @@ def Main():
     else:
         collected = Single_PCAP()
 
-    if collected is not None:
+    if collected != None:
         print(Fore.GREEN + "\n\t[-] " + Fore.LIGHTYELLOW_EX + "Writing to file" + Style.RESET_ALL)
         print(Fore.LIGHTGREEN_EX + "\t-----------------" + Style.RESET_ALL)
         if type(collected) is Totals:

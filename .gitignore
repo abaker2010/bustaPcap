@@ -343,3 +343,4 @@ healthchecksdb
 /bustaPcap/Reports
 /bustaPcap/Totals
 /bustaPcap/mixedLarge
+*.pcapng

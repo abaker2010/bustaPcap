@@ -18,6 +18,24 @@ Overview
 	determine protocol usage, ssl/tls versions used, IP to IP communication, 
 	IP to FQDN, and collects HTTP requests, responses, and data.
 
+
+Requirements
+-----------------------
+	Pip Requirements : 
+	-----------------------
+		- colorama  0.4.1
+		- pathlib   1.0.1
+		- pyshark   0.4.2.3
+	
+	* (Recommended) Needed requirements can be installed using the `python -m pip install -r requirements` command
+
+	Extra Installed Software : 
+	-----------------------
+		- Tshark
+		
+	* If you have installed Wireshark this package should be already installed and configured to be used. 
+
+
 Usage
 -----------------------
 
@@ -59,10 +77,3 @@ Usage
 		-o  --OUTPUT=SAVE_FILE
 							Usage: -o <filename>    This option saves the output
 							into the provided filename
-
-
-	Pip Requirements
-	-----------------------
-		- colorama  0.4.1
-		- pathlib   1.0.1
-		- pyshark   0.4.2.3

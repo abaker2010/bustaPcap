@@ -68,7 +68,7 @@ class Print:
     #region Print Http Info
     def Print_HttpInfo(self):
         if type(self.collection) is Collector:
-            if bool(self.collection.getHttpInfo()) is not False:
+            if bool(self.collection.getHttpInfo()) != False:
                 print("\n\t\t-------------")
                 print(Fore.LIGHTGREEN_EX + "\t\t[-] " + Fore.LIGHTYELLOW_EX + "HTTP Information" + Style.RESET_ALL)
                 print("\t\t-------------")
@@ -100,7 +100,7 @@ class Print:
     #region Print Http Malformed Headers
     def Print_HttpMalformedHeaders(self):
         if type(self.collection) is Collector:
-            if bool(self.collection.getHttpMalformedHeaders()) is not False:
+            if bool(self.collection.getHttpMalformedHeaders()) != False:
                 
                 print(Fore.LIGHTGREEN_EX + "\t\t[-] " + Fore.LIGHTYELLOW_EX + "HTTP Malformed Headers" + Style.RESET_ALL)
                 print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
@@ -108,27 +108,27 @@ class Print:
                 for url in headersMalformed:
                     print(Fore.LIGHTGREEN_EX + "\t\t\t[-] " + Fore.LIGHTYELLOW_EX + "URL: " + Fore.LIGHTCYAN_EX + url + Style.RESET_ALL)
                     print(Fore.GREEN + "\t\t\t----------------------" + Style.RESET_ALL)
-                    if bool(headersMalformed[url]["login"]) is not False:
+                    if bool(headersMalformed[url]["login"]) != False:
                         print(Fore.LIGHTGREEN_EX + "\t\t\t\t[-] " + Fore.LIGHTYELLOW_EX + "Log In Headers" + Style.RESET_ALL)
                         print(Fore.GREEN + "\t\t\t\t-------------" + Style.RESET_ALL)
                         for pktnum in headersMalformed[url]["login"]:
                             print("\t\t\t\t\tLog In: PKT Num: %s : %s" % (pktnum, headersMalformed[url]["login"][pktnum]))
-                    if bool(headersMalformed[url]["job"]) is not False:
+                    if bool(headersMalformed[url]["job"]) != False:
                         print(Fore.LIGHTGREEN_EX + "\n\t\t\t\t[-] " + Fore.LIGHTYELLOW_EX + "Job In Headers" + Style.RESET_ALL)
                         print(Fore.GREEN + "\t\t\t\t-------------" + Style.RESET_ALL) 
                         for pktnum in headersMalformed[url]["job"]:
                             print("\t\t\t\t\tJob: PKT Num: %s : %s" % (pktnum, headersMalformed[url]["job"][pktnum]))
-                    if bool(headersMalformed[url]["keepalived"]) is not False:
+                    if bool(headersMalformed[url]["keepalived"]) != False:
                         print(Fore.LIGHTGREEN_EX + "\n\t\t\t\t[-] " + Fore.LIGHTYELLOW_EX + "Keep Alive In Headers" + Style.RESET_ALL)
                         print(Fore.GREEN + "\t\t\t\t-------------" + Style.RESET_ALL) 
                         for pktnum in headersMalformed[url]["keepalived"]:
                             print("\t\t\t\t\tKeep Alive: PKT Num: %s : %s" % (pktnum, headersMalformed[url]["keepalived"][pktnum]))
-                    if bool(headersMalformed[url]["submit"]) is not False:
+                    if bool(headersMalformed[url]["submit"]) != False:
                         print(Fore.LIGHTGREEN_EX + "\n\t\t\t\t[-] " + Fore.LIGHTYELLOW_EX + "Submit In Headers" + Style.RESET_ALL)
                         print(Fore.GREEN + "\t\t\t\t-------------" + Style.RESET_ALL) 
                         for pktnum in headersMalformed[url]["submit"]:
                             print("\t\t\t\t\tSubmit: PKT Num: %s : %s" % (pktnum, headersMalformed[url]["submit"][pktnum]))
-                    if bool(headersMalformed[url]["error"]) is not False:
+                    if bool(headersMalformed[url]["error"]) != False:
                         print(Fore.LIGHTGREEN_EX + "\n\t\t\t\t[-] " + Fore.LIGHTYELLOW_EX + "Error In Headers" + Style.RESET_ALL)
                         print(Fore.GREEN + "\t\t\t\t-------------" + Style.RESET_ALL) 
                         for pktnum in headersMalformed[url]["error"]:
