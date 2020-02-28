@@ -338,9 +338,11 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
-/bustaPcap/pcaps
-/bustaPcap/pcapsdir
-/bustaPcap/Reports
-/bustaPcap/Totals
-/bustaPcap/mixedLarge
 *.pcapng
+*.pcap
+*.cap
+*.txt
+**/Reports/
+**/Totals/
+*.zip
+*.swp

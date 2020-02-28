@@ -1,21 +1,36 @@
 #!/usr/bin/python
 # Created by: Aaron Baker&Elliot Kjerstad
+import os
 import sys
+import platform
 import colorama 
 from colorama import Fore, Back, Style
-from classes.Collector import Collector
-from classes.Totals import Totals
-from classes.Writer import Writer
+from application.classes.Collectors.Collector import Collector
+from .Totals import Totals
+from .Writer import Writer
+from application.classes.Helpers.Opener import FolderOpener
+from application.classes.Structure.FolderStruct import FolderStruct
+from application.classes.Helpers.PrinterBase import PrinterBase
 
 class Saver(Collector, Totals):
     #regoin Init For Class
-    def __init__(self, capts, do_fqdn, *args, **kwargs):
+    def __init__(self, capts, do_fqdn):
         self.capts = capts
         self.do_fqdn = do_fqdn
-        self.folderStruct = kwargs.get("Folders", None)
-        self.save_file_name = kwargs.get("FileName", None)
-        self.path = kwargs.get("Path", None)
-        return
+        # self.folderStruct = kwargs.get("Folders", None)
+        self.save_file_name = capts.get_name()
+        self.path = FolderOpener().totals + "/" + capts.get_namestripped() + "/"
+
+        self.printerBase = PrinterBase()
+        # print(os.path.exists(self.path))
+        if not os.path.exists(self.path):
+            if platform.system() != "windows":
+                self.path = self.path.replace("\\", "/")
+            if not os.path.exists(self.path):
+                os.makedirs(self.path)
+        
+        # print(os.path.exists(self.path))
+        # return
     #endregion
     
     #region Override for __str__ this returns a string
@@ -47,7 +62,8 @@ class Saver(Collector, Totals):
 
     #region Save
     def Save(self):
-        print(Fore.LIGHTGREEN_EX + "\t\t-------------------------------" + Style.RESET_ALL)
+        self.printerBase.print_formatted_sub_header("Saving Data")
+        # print(Fore.LIGHTGREEN_EX + "\t\t-------------------------------" + Style.RESET_ALL)
         saveIPFilters = Writer(self.save_file_name + "-Filtered-IPS", self.Save_IPS_Filtered(), "w+", infoname = "Filtered IPS", path = self.path)
         saveIPFilters.Save_Info()
 
@@ -83,6 +99,8 @@ class Saver(Collector, Totals):
         print("\n")
         fileWriter = Writer(self.save_file_name, str(self), "w+", infoname = "All Data", path = self.path)
         fileWriter.Save()
+
+        self.printerBase.print_horizontal_break()
         return
     #endregion
 
@@ -90,7 +108,7 @@ class Saver(Collector, Totals):
     def Save_Header(self):
         toSave = ""
         if type(self.capts) is Collector:
-            toSave += "\n\t%s: %s" % ("Processed Information", self.capts.Get_Name())
+            toSave += "\n\t%s: %s" % ("Processed Information", self.capts.get_name())
             toSave += "\n\t-----------------------"
             toSave += "\n\t\t%s: %s" % ("[?] Total Packets", self.capts.packet_count())
         else:
@@ -112,7 +130,7 @@ class Saver(Collector, Totals):
                 toSave += "\n\t\t\t%s -> %s" % (t, fp["TCP"][t])
                 toSave += "\n\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.capts.packet_count() * 100))
         else:
-            fp = self.capts.Capture_Filtered_Protocols()
+            fp = self.capts.filtered_protocols()
             for t in fp["TCP"].keys():
                 toSave += "\n\t\t\t%s -> %s" % (t, fp["TCP"][t])
                 toSave += "\n\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.capts.Capture_Total_Count() * 100))
@@ -132,11 +150,11 @@ class Saver(Collector, Totals):
                     toSave += "\n\t\t\t%s -> %s" % (k, v)
                     toSave += "\n\t\t\t{0:.2f}%".format((v / (sum(self.capts.ssltls().values())) * 100))
         else:
-            if bool(self.capts.Capture_TLS()) is True:
+            if bool(self.capts.ssltls()) is True:
                 toSave += header
-                for k, v in self.capts.Capture_TLS().items():
+                for k, v in self.capts.ssltls().items():
                     toSave += "\n\t\t\t%s -> %s" % (k, v)
-                    toSave += "\n\t\t\t{0:.2f}%".format((v / (sum(self.capts.Capture_TLS.values())) * 100))
+                    toSave += "\n\t\t\t{0:.2f}%".format((v / (sum(self.capts.ssltls.values())) * 100))
         if toSave != "":
             return toSave
         else:
@@ -155,9 +173,9 @@ class Saver(Collector, Totals):
                 toSave += "\n\t\t\t%s -> %s" % (t, up["UDP"][t])
                 toSave += "\n\t\t\t{0:.2f}%".format((up["UDP"][t] / self.capts.packet_count() * 100))
         else:
-            fp = self.capts.Capture_Filtered_Protocols()
-            fp = self.capts.Capture_Filtered_Protocols()
-            for t in self.capts.Capture_Filtered_Protocols()["UDP"].keys():
+            fp = self.capts.filtered_protocols()
+            fp = self.capts.filtered_protocols()
+            for t in self.capts.filtered_protocols()["UDP"].keys():
                 toSave += "\n\t\t\t%s -> %s" % (t, fp["UDP"][t])
                 toSave += "\n\t\t\t{0:.2f}%".format((fp["UDP"][t] / self.capts.Capture_Total_Count() * 100))
         return toSave
@@ -176,7 +194,7 @@ class Saver(Collector, Totals):
                     toSave += "\n\t\t\t%s -> %s" % (t, up["LLC"][t])
                     toSave += "\n\t\t\t{0:.2f}%".format((up["LLC"][t] / self.capts.totalLLC() * 100))
         else:
-            fp = self.capts.Capture_Filtered_Protocols()
+            fp = self.capts.filtered_protocols()
             if bool(fp["LLC"]) is True:
                 toSave += header
                 for t in fp["LLC"].keys():
@@ -199,8 +217,8 @@ class Saver(Collector, Totals):
                 toSave += "\n\t\t\t%s -> %s" % (t, fp["OTHER"][t])
                 toSave += "\n\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.capts.packet_count() * 100))
         else:
-            fp = self.capts.Capture_Filtered_Protocols()
-            for t in self.capts.Capture_Filtered_Protocols()["OTHER"].keys():
+            fp = self.capts.filtered_protocols()
+            for t in self.capts.filtered_protocols()["OTHER"].keys():
                 toSave += "\n\t\t\t%s -> %s" % (t, fp["OTHER"][t])
                 toSave += "\n\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.capts.Capture_Total_Count() * 100))
         return toSave
@@ -221,20 +239,20 @@ class Saver(Collector, Totals):
         toSave = ""
         toSave += "\n\t\t[-] IP Addresses (Filtered)"
         toSave += "\n\t\t-------------"
-        if type(self.capts) is Collector:
-            evn = 0
-            for snt in self.capts.ip_addresses_filtered().keys():
-                toSave += "\n\t\t\t%s : %s" % (snt, self.capts.ip_addresses_filtered()[snt])
-                evn += 1
-                if (evn % 2) == 0:
-                    toSave += "\n"
-        else:
-            evn = 0
-            for snt in self.capts.Capture_IP_Filtered().keys():
-                toSave += "\n\t\t\t%s : %s" % (snt, self.capts.Capture_IP_Filtered()[snt])
-                evn += 1
-                if (evn % 2) == 0:
-                    toSave += "\n"
+        # if type(self.capts) is Collector:
+        #     evn = 0
+        #     for snt in self.capts.ip_addresses_filtered().keys():
+        #         toSave += "\n\t\t\t%s : %s" % (snt, self.capts.ip_addresses_filtered()[snt])
+        #         evn += 1
+        #         if (evn % 2) == 0:
+        #             toSave += "\n"
+        # else:
+        evn = 0
+        for snt in self.capts.ip_addresses_filtered().keys():
+            toSave += "\n\t\t\t%s : %s" % (snt, self.capts.ip_addresses_filtered()[snt])
+            evn += 1
+            if (evn % 2) == 0:
+                toSave += "\n"
         return toSave 
     #endregion
     
