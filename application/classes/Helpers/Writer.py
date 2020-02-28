@@ -51,9 +51,9 @@ class Writer():
         with open(self.path + self.filename, self.mode) as file:
             try:
                 file.write(self.data)
-                file.write("\n\n")
             except Exception as e:
                 print("Saving Media Error")
+                print(self.mode)
                 print(e)
         return
     #endregion

@@ -103,12 +103,16 @@ class Collector:
                             elif layerName == "media":
                                 try:
                                     # print("Media in pcap needs parsed")
+                                    # print(uri)
+                                    # print(f"\n\n{pkt}\n\n")
                                     self.check_media(layer, uri)
                                 except Exception as e:
                                     print(f"Issue with media : {e}")
+                                    print(Fore.RED + layer + Style.RESET_ALL)
                                     pass
                             elif layerName == "data":
                                 try:
+                                    # print(layer)
                                     pass
                                 except Exception as e:
                                     print(f"Issue with data : {e}")
@@ -325,19 +329,37 @@ class Collector:
     #region Check_Media
     def check_media(self, pkt, uri):
         dataString = ""
-        for d in pkt.type.split(':'):
-            dataString += str(bytes.fromhex(d), 'utf-8')
+        try:
+            bytes.fromhex(pkt.get_field_value('type').replace(':',''))
+            # print("")
+            # print(type(pkt.type))
+            # print("")
+            # print(dir(pkt))
+            # print(bytes.fromhex(pkt.get_field_value('type').replace(':','')))
+            # print(len(pkt.get_field_value('type')))
+            # # print(pkt.type)
+            # print("")
+            # print(dir(pkt))
+        except Exception as ee:
+            print(Fore.RED + ee + "\n\n" + pkt.get_field_value('type') + Style.RESET_ALL)
+            
+
+        # for d in pkt.type.split(':'):
+        #     dataString += str(bytes.fromhex(d), 'utf-8')
         try:
             folder = self.folderPath + "\\" + self.captureName.split('.')[0] + "\\"
             if platform.system() != "windows":
                 folder = folder.replace("\\", "/")  
 
+            data = bytes.fromhex(pkt.get_field_value('type').replace(':',''))
+            print(type(data))
             # print(folder)
-            fileSaver = Writer("Media-" + uri.replace('\\','-').replace('*','-').replace('?','-').replace('"','-').replace('<','-').replace('>','-').replace('/', '-').replace(':', '-').replace('|','-'), dataString, 'w', path = folder)
+            fileSaver = Writer("Media-" + uri.replace('\\','-').replace('*','-').replace('?','-').replace('"','-').replace('<','-').replace('>','-').replace('/', '-').replace(':', '-').replace('|','-'), data, 'wb', path = folder)
             fileSaver.Save_Media()
         except Exception as e:
             print("Error setting folder path")
             print(e)
+            print(Fore.RED + pkt.get_field_value('type') + Style.RESET_ALL)
         return
     #endregion
 
