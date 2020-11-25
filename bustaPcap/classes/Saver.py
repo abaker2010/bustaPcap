@@ -24,12 +24,12 @@ class Saver(Collector, Totals):
         toSave += "%s\n" % self.Save_Header()
         toSave += "\n%s" % self.Save_TCP()
         
-        if self.Save_SSLTLS() != None:
+        if self.Save_SSLTLS() is not None:
             toSave += "\n%s" % self.Save_SSLTLS()
 
         toSave += "\n%s" % self.Save_UDP()
 
-        if self.Save_LLC() != None:
+        if self.Save_LLC() is not None:
             toSave += "\n%s" % self.Save_LLC()
         
         toSave += "\n%s" % self.Save_Other_Protocols()
@@ -37,10 +37,10 @@ class Saver(Collector, Totals):
         if self.do_fqdn is True:
             toSave += "\n%s" % self.Save_FQDN()
 
-        if self.Save_HttpInfo() != None:
+        if self.Save_HttpInfo() is not None:
             toSave += "\n%s" % self.Save_HttpInfo()
 
-        if self.Save_HttpMalformedHeaders() != None:
+        if self.Save_HttpMalformedHeaders() is not None:
             toSave += "\n%s" % self.Save_HttpMalformedHeaders()
         return toSave
     #endregion
@@ -55,11 +55,11 @@ class Saver(Collector, Totals):
             saveFQDN = Writer(self.save_file_name + "-IPS-FQDN", self.Save_FQDN(), "w+", infoname = "IPs to FQDN", path = self.path)
             saveFQDN.Save_Info()
         
-        if self.Save_SSLTLS() != None:
+        if self.Save_SSLTLS() is not None:
             saveSSLTLS = Writer(self.save_file_name + "-SSL-TLS", self.Save_SSLTLS(), "w+", infoname = "SSL/TLS", path = self.path)
             saveSSLTLS.Save_Info()
 
-        if self.Save_LLC() != None:
+        if self.Save_LLC() is not None:
             saveLLC = Writer(self.save_file_name + "-LLC", self.Save_LLC(), "w+", infoname = "LLC", path = self.path)
             saveLLC.Save_Info()
         
@@ -72,11 +72,11 @@ class Saver(Collector, Totals):
         saveOtherProtcols = Writer(self.save_file_name + "-Other-Protocols", self.Save_Other_Protocols(), "w+", infoname = "Other Protocols", path = self.path)
         saveOtherProtcols.Save_Info()
 
-        if self.Save_HttpInfo() != None:
+        if self.Save_HttpInfo() is not None:
             saveHttpInfo = Writer(self.save_file_name + "-Http-Info", self.Save_HttpInfo(), "w+", infoname = "HTTP Info", path = self.path)
             saveHttpInfo.Save_Info()
 
-        if self.Save_HttpMalformedHeaders() != None:
+        if self.Save_HttpMalformedHeaders() is not None:
             saveHttpMalformedHeaders = Writer(self.save_file_name + "-HTTP-Malformed-Headers", self.Save_HttpMalformedHeaders(), "w+", infoname = "Http Malformed Headers", path = self.path)
             saveHttpMalformedHeaders.Save_Info()
 
@@ -258,7 +258,7 @@ class Saver(Collector, Totals):
         toSave = ""
         
         if type(self.capts) is Collector:
-            if bool(self.capts.getHttpInfo()) != False:
+            if bool(self.capts.getHttpInfo()) is not False:
                 toSave += "\n\t\t-------------"
                 toSave += "\n\t\t[-] HTTP Information"
                 toSave += "\n\t\t-------------"
@@ -300,7 +300,7 @@ class Saver(Collector, Totals):
     def Save_HttpMalformedHeaders(self):
         toSave = ""
         if type(self.capts) is Collector:
-            if bool(self.capts.getHttpMalformedHeaders()) != False:
+            if bool(self.capts.getHttpMalformedHeaders()) is not False:
                 toSave += "\n\t\t-------------"
                 toSave += "\n\t\t[-] HTTP Malformed Headers"
                 toSave += "\n\t\t-------------"
@@ -308,27 +308,27 @@ class Saver(Collector, Totals):
                 for url in headersMalformed:
                     toSave += "\n\t\t\tURL: %s" % (url)
                     toSave += "\n\t\t\t----------------------"
-                    if bool(headersMalformed[url]["login"]) != False:
+                    if bool(headersMalformed[url]["login"]) is not False:
                         toSave += "\n\t\t\t\tLog In Headers"
                         toSave += "\n\t\t\t\t-------------"
                         for pktnum in headersMalformed[url]["login"]:
                             toSave += "\n\t\t\t\t\tLog In: PKT Num: %s : %s" % (pktnum, headersMalformed[url]["login"][pktnum])
-                    if bool(headersMalformed[url]["job"]) != False:
+                    if bool(headersMalformed[url]["job"]) is not False:
                         toSave += "\n\n\t\t\t\tJob In Headers"
                         toSave += "\n\t\t\t\t-------------"
                         for pktnum in headersMalformed[url]["job"]:
                             toSave += "\n\t\t\t\t\tJob: PKT Num: %s : %s" % (pktnum, headersMalformed[url]["job"][pktnum])
-                    if bool(headersMalformed[url]["keepalived"]) != False:
+                    if bool(headersMalformed[url]["keepalived"]) is not False:
                         toSave += "\n\n\t\t\t\tKeep Alive In Headers"
                         toSave += "\n\t\t\t\t-------------"
                         for pktnum in headersMalformed[url]["keepalived"]:
                             toSave += "\n\t\t\t\t\tKeep Alive: PKT Num: %s : %s" % (pktnum, headersMalformed[url]["keepalived"][pktnum])
-                    if bool(headersMalformed[url]["submit"]) != False:
+                    if bool(headersMalformed[url]["submit"]) is not False:
                         toSave += "\n\n\t\t\t\tSubmit In Headers"
                         toSave += "\n\t\t\t\t-------------"
                         for pktnum in headersMalformed[url]["submit"]:
                             toSave += "\n\t\t\t\t\tSubmit: PKT Num: %s : %s" % (pktnum, headersMalformed[url]["submit"][pktnum])
-                    if bool(headersMalformed[url]["error"]) != False:
+                    if bool(headersMalformed[url]["error"]) is not False:
                         toSave += "\n\n\t\t\t\tError In Headers"
                         toSave += "\n\t\t\t\t-------------"
                         for pktnum in headersMalformed[url]["error"]:

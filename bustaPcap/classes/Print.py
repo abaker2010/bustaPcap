@@ -166,7 +166,7 @@ class Print:
             print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
             for k, v in sslTLS.items():
                 print(Fore.LIGHTYELLOW_EX + "\t\t\t" + k + Fore.LIGHTGREEN_EX + " -> " + Fore.CYAN + str(v) + Style.RESET_ALL)
-                printf("\t\t\t{:.2f}%".format((v / (sum(sslTLS.values())) * 100)))
+                print("\t\t\t{:.2f}%".format((v / (sum(sslTLS.values())) * 100)))
         return
     #endregion
 
