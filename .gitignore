@@ -342,6 +342,7 @@ healthchecksdb
 *.pcap
 *.cap
 *.txt
+**/Pcaps/
 **/Reports/
 **/Totals/
 *.zip

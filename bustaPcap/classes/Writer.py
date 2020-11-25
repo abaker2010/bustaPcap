@@ -51,21 +51,6 @@ class Writer():
         with open(self.path + self.filename, self.mode) as file:
             try:
                 file.write(self.data)
-            except Exception as e:
-                print("Saving Media Error")
-                print(self.mode)
-                print(e)
-        return
-    #endregion
-
-    #region Save JFIF
-    def Save_JFIF(self):
-        if not os.path.exists(self.path):
-            os.makedirs(self.path)
-
-        with open(self.path + self.filename, self.mode) as file:
-            try:
-                file.write(self.data)
                 file.write("\n\n")
             except Exception as e:
                 print("Saving Media Error")
@@ -76,7 +61,6 @@ class Writer():
     #region Save Information self.data
     def Save_Info(self):
         print(Fore.LIGHTCYAN_EX + "\t\t\t[?] " + Style.RESET_ALL + "Saving data for : " + Fore.LIGHTYELLOW_EX + self.infoname + Style.RESET_ALL)
-        # print(self.path)
         with open(self.path + self.filename + ".txt", self.mode) as file:
             try:
                 file.write(self.data)
