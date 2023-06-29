@@ -16,7 +16,7 @@ class Print:
 
     #region Print All Both For Dir & Single
     def Print_All(self):
-        if type(self.collection) is Totals:
+        if type(self.collection) == Totals:
             for pkt in self.collection.All_Collected():
                 Print(pkt, self.fqdnbool).Print_All()
             Print(self.collection, self.fqdnbool).Print_Dir()
@@ -28,7 +28,7 @@ class Print:
             self.Print_LLC()
             self.Print_Other_Protocols()
             self.Print_IPS_Filtered()
-            if self.fqdnbool is True:
+            if self.fqdnbool == True:
                 self.Print_FQDN()
             self.Print_HttpInfo()
             self.Print_HttpMalformedHeaders()
@@ -44,7 +44,7 @@ class Print:
         self.Print_LLC()
         self.Print_Other_Protocols()
         self.Print_IPS_Filtered()
-        if self.fqdnbool is True:
+        if self.fqdnbool == True:
             self.Print_FQDN()
         #self.Print_HttpInfo()
         #self.Print_HttpMalformedHeaders()
@@ -53,7 +53,7 @@ class Print:
 
     #region Print Header
     def Print_Header(self):
-        if type(self.collection) is Collector:
+        if type(self.collection) == Collector:
             print(Fore.LIGHTGREEN_EX + "\n\n\tProcessed Information: " + Fore.LIGHTYELLOW_EX + self.collection.Get_Name() + Style.RESET_ALL)
             print(Fore.GREEN + "\t-----------------------" + Style.RESET_ALL)
             print(Fore.LIGHTCYAN_EX + "\n\t[?] " + Fore.LIGHTGREEN_EX + "Total Packets : " + Fore.LIGHTGREEN_EX + str(self.collection.packet_count()) + Style.RESET_ALL)
@@ -67,8 +67,8 @@ class Print:
 
     #region Print Http Info
     def Print_HttpInfo(self):
-        if type(self.collection) is Collector:
-            if bool(self.collection.getHttpInfo()) is not False:
+        if type(self.collection) == Collector:
+            if bool(self.collection.getHttpInfo()) != False:
                 print("\n\t\t-------------")
                 print(Fore.LIGHTGREEN_EX + "\t\t[-] " + Fore.LIGHTYELLOW_EX + "HTTP Information" + Style.RESET_ALL)
                 print("\t\t-------------")
@@ -99,8 +99,8 @@ class Print:
 
     #region Print Http Malformed Headers
     def Print_HttpMalformedHeaders(self):
-        if type(self.collection) is Collector:
-            if bool(self.collection.getHttpMalformedHeaders()) is not False:
+        if type(self.collection) == Collector:
+            if bool(self.collection.getHttpMalformedHeaders()) != False:
                 
                 print(Fore.LIGHTGREEN_EX + "\t\t[-] " + Fore.LIGHTYELLOW_EX + "HTTP Malformed Headers" + Style.RESET_ALL)
                 print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
@@ -108,27 +108,27 @@ class Print:
                 for url in headersMalformed:
                     print(Fore.LIGHTGREEN_EX + "\t\t\t[-] " + Fore.LIGHTYELLOW_EX + "URL: " + Fore.LIGHTCYAN_EX + url + Style.RESET_ALL)
                     print(Fore.GREEN + "\t\t\t----------------------" + Style.RESET_ALL)
-                    if bool(headersMalformed[url]["login"]) is not False:
+                    if bool(headersMalformed[url]["login"]) != False:
                         print(Fore.LIGHTGREEN_EX + "\t\t\t\t[-] " + Fore.LIGHTYELLOW_EX + "Log In Headers" + Style.RESET_ALL)
                         print(Fore.GREEN + "\t\t\t\t-------------" + Style.RESET_ALL)
                         for pktnum in headersMalformed[url]["login"]:
                             print("\t\t\t\t\tLog In: PKT Num: %s : %s" % (pktnum, headersMalformed[url]["login"][pktnum]))
-                    if bool(headersMalformed[url]["job"]) is not False:
+                    if bool(headersMalformed[url]["job"]) != False:
                         print(Fore.LIGHTGREEN_EX + "\n\t\t\t\t[-] " + Fore.LIGHTYELLOW_EX + "Job In Headers" + Style.RESET_ALL)
                         print(Fore.GREEN + "\t\t\t\t-------------" + Style.RESET_ALL) 
                         for pktnum in headersMalformed[url]["job"]:
                             print("\t\t\t\t\tJob: PKT Num: %s : %s" % (pktnum, headersMalformed[url]["job"][pktnum]))
-                    if bool(headersMalformed[url]["keepalived"]) is not False:
+                    if bool(headersMalformed[url]["keepalived"]) != False:
                         print(Fore.LIGHTGREEN_EX + "\n\t\t\t\t[-] " + Fore.LIGHTYELLOW_EX + "Keep Alive In Headers" + Style.RESET_ALL)
                         print(Fore.GREEN + "\t\t\t\t-------------" + Style.RESET_ALL) 
                         for pktnum in headersMalformed[url]["keepalived"]:
                             print("\t\t\t\t\tKeep Alive: PKT Num: %s : %s" % (pktnum, headersMalformed[url]["keepalived"][pktnum]))
-                    if bool(headersMalformed[url]["submit"]) is not False:
+                    if bool(headersMalformed[url]["submit"]) != False:
                         print(Fore.LIGHTGREEN_EX + "\n\t\t\t\t[-] " + Fore.LIGHTYELLOW_EX + "Submit In Headers" + Style.RESET_ALL)
                         print(Fore.GREEN + "\t\t\t\t-------------" + Style.RESET_ALL) 
                         for pktnum in headersMalformed[url]["submit"]:
                             print("\t\t\t\t\tSubmit: PKT Num: %s : %s" % (pktnum, headersMalformed[url]["submit"][pktnum]))
-                    if bool(headersMalformed[url]["error"]) is not False:
+                    if bool(headersMalformed[url]["error"]) != False:
                         print(Fore.LIGHTGREEN_EX + "\n\t\t\t\t[-] " + Fore.LIGHTYELLOW_EX + "Error In Headers" + Style.RESET_ALL)
                         print(Fore.GREEN + "\t\t\t\t-------------" + Style.RESET_ALL) 
                         for pktnum in headersMalformed[url]["error"]:
@@ -139,7 +139,7 @@ class Print:
 
     #region Print TCP Information
     def Print_TCP(self):
-        if type(self.collection) is Collector:
+        if type(self.collection) == Collector:
             fp = self.collection.filtered_protocols()
         else:
             fp = self.collection.Capture_Filtered_Protocols()
@@ -149,30 +149,30 @@ class Print:
             
         for t in fp["TCP"].keys():
             print(Fore.LIGHTYELLOW_EX + "\t\t\t" + t + Fore.LIGHTGREEN_EX +  " -> " + Fore.CYAN + str(fp["TCP"][t]) + Style.RESET_ALL)
-            print("\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.collection.packet_count() * 100)))
+            print("\t\t\t\t{0:.2f}%".format((fp["TCP"][t] / self.collection.packet_count() * 100)))
         return
     #endregion
 
     #region Print SSL/TLS Information
     def Print_SSLTLS(self):
-        if type(self.collection) is Collector:
+        if type(self.collection) == Collector:
             sslTLS = self.collection.ssltls()
         else:
             sslTLS = self.collection.Capture_TLS()
 
 
-        if bool(sslTLS) is True:
+        if bool(sslTLS) == True:
             print(Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "SSL/TLS Version : " + Fore.LIGHTGREEN_EX + str(sum(sslTLS.values())) + Style.RESET_ALL)
             print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
             for k, v in sslTLS.items():
                 print(Fore.LIGHTYELLOW_EX + "\t\t\t" + k + Fore.LIGHTGREEN_EX + " -> " + Fore.CYAN + str(v) + Style.RESET_ALL)
-                print("\t\t\t{:.2f}%".format((v / (sum(sslTLS.values())) * 100)))
+                print("\t\t\t\t{:.2f}%".format((v / (sum(sslTLS.values())) * 100)))
         return
     #endregion
 
     #region Print UDP Information
     def Print_UDP(self):
-        if type(self.collection) is Collector:
+        if type(self.collection) == Collector:
             fp = self.collection.filtered_protocols()
         else:
             fp = self.collection.Capture_Filtered_Protocols()
@@ -182,7 +182,7 @@ class Print:
 
         for t in fp["UDP"].keys():
             print(Fore.LIGHTYELLOW_EX + "\t\t\t" + t + Fore.LIGHTGREEN_EX + " -> " + Fore.CYAN + str(fp["UDP"][t]) + Style.RESET_ALL)
-            print("\t\t\t{0:.2f}%".format((fp["UDP"][t] / self.collection.packet_count() * 100)))
+            print("\t\t\t\t{0:.2f}%".format((fp["UDP"][t] / self.collection.packet_count() * 100)))
         return
     #endregion
 
@@ -191,22 +191,22 @@ class Print:
         header1 = Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "LLC" + Style.RESET_ALL
         header2 = Fore.GREEN + "\t\t-------------" + Style.RESET_ALL
 
-        if type(self.collection) is Collector:
+        if type(self.collection) == Collector:
             up = self.collection.filtered_protocols()
-            if bool(up["LLC"]) is True:
+            if bool(up["LLC"]) == True:
                 print(header1)
                 print(header2)
                 for t in up["LLC"].keys():
                     print("\t\t\t%s -> %s" % (t, up["LLC"][t]))
-                    print("\t\t\t{0:.2f}%".format((up["LLC"][t] / self.collection.packet_count() * 100)))
+                    print("\t\t\t\t{0:.2f}%".format((up["LLC"][t] / self.collection.packet_count() * 100)))
         else:
             fp = self.collection.Capture_Filtered_Protocols()
-            if bool(fp["LLC"]) is True:
+            if bool(fp["LLC"]) == True:
                 print(header1)
                 print(header2)
                 for t in self.collection.Capture_Filtered_Protocols()["LLC"].keys():
                     print("\t\t\t%s -> %s" % (t, fp["LLC"][t]))
-                    print("\t\t\t{0:.2f}%".format((fp["LLC"][t] / self.collection.packet_count() * 100)))
+                    print("\t\t\t\t{0:.2f}%".format((fp["LLC"][t] / self.collection.packet_count() * 100)))
         return
     #endregion
 
@@ -214,14 +214,14 @@ class Print:
     def Print_Other_Protocols(self):
         print(Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "In Depth View (All Protocols)" + Style.RESET_ALL)
         print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
-        if type(self.collection) is Collector:
+        if type(self.collection) == Collector:
             fp = self.collection.filtered_protocols()
         else:
             fp = self.collection.Capture_Filtered_Protocols()
 
         for t in fp["OTHER"].keys():
             print(Fore.LIGHTYELLOW_EX + "\t\t\t" + t + Fore.LIGHTGREEN_EX + " -> " + Fore.CYAN + str(fp["OTHER"][t]) + Style.RESET_ALL)
-            print("\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.collection.packet_count() * 100)))
+            print("\t\t\t\t{0:.2f}%".format((fp["OTHER"][t] / self.collection.packet_count() * 100)))
         return
     #endregion
 
@@ -239,7 +239,7 @@ class Print:
         print(Fore.LIGHTGREEN_EX + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + "IP Addresses (Filtered)" + Style.RESET_ALL)
         print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
         evn = 0
-        if type(self.collection) is Collector:
+        if type(self.collection) == Collector:
             collected = self.collection.ip_addresses_filtered()
         else:
             collected = self.collection.Capture_IP_Filtered()
@@ -257,7 +257,7 @@ class Print:
     def Print_FQDN(self):
         print(Fore.GREEN + "\n\t\t[-] " + Fore.LIGHTYELLOW_EX + " IP Addresses -> FQDN" + Style.RESET_ALL)
         print(Fore.GREEN + "\t\t-------------" + Style.RESET_ALL)
-        if type(self.collection) is Collector:
+        if type(self.collection) == Collector:
             fqdn = sorted(self.collection.fqdn().items())
         else:
             fqdn = sorted(self.collection.Capture_IP_FQDN().items())

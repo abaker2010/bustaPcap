@@ -51,7 +51,7 @@ class Collector:
         return
     #endregion
 
-    #region Rake : This coplies the Collector so extra method call is needed or appended on creation but should add extra functionality
+    #region Rake : This coplies the Collector so extra method call == needed or appended on creation but should add extra functionality
     def Rake(self):
         for pkt in self.capts:
             self.packetCount += 1
@@ -80,7 +80,7 @@ class Collector:
                     pass
             elif layerName == "http":
                 try:
-                    if hasattr(pkt, 'unknown_header') is True:
+                    if hasattr(pkt, 'unknown_header') == True:
                         self.Check_Crypto(pkt, src)
                     uri = self.Check_Response_Code(pkt, src)
                 except Exception as e:
@@ -158,7 +158,7 @@ class Collector:
                     if ':' in field_line:
                         field_name, field_line = field_line.split(':', 1)
                         info[field_name.strip()] = field_line.strip().replace('\\r', '').replace('\\n', '')
-        if hasattr(pkt, 'response_code') is True:
+        if hasattr(pkt, 'response_code') == True:
             if pkt.response_for_uri not in self.httpInfo:
                 self.httpInfo[pkt.response_for_uri] = { "IP" : src, "Sent" : [], "Recv" : [info], "Data-Text-Line" : []}
             else: 
@@ -176,14 +176,14 @@ class Collector:
 
     #region Cryptojacking Checker
     def Check_Crypto(self, pkt, src):
-        # wire shark is getting this mixed up with a bad header so that is why it is showing funny in the 
-        # program not their fault but is it because the coin miner is able to by pass firewalls and such this way
+        # wire shark == getting this mixed up with a bad header so that == why it == showing funny in the 
+        # program not their fault but == it because the coin miner == able to by pass firewalls and such this way
         # In here needs to be regex parser try catchs for each one found then 
         # have a dict like {Loging : {}, Job : {}, Error : {}}
         # use the json to c# to build the needed objects that the logic will need
 
         # in each instance this needs to add information to the httpinfo dict in the malform header section
-        # then when printing the malformed header needs to be checked and printed if there is any information to be displayed
+        # then when printing the malformed header needs to be checked and printed if there == any information to be displayed
 
         result = re.compile(r'{"jsonrpc":"\d.\d","method":"(\w+)","params":{(.+)}}', re.IGNORECASE)
         m = result.match(str(pkt.unknown_header))
@@ -194,7 +194,7 @@ class Collector:
             else:
                 self.httpMalformedHeaders[src]["job"][self.packetCount] = m.group()
 
-        if m is None:
+        if m == None:
             result = re.compile(r'{"id":\d+,"jsonrpc":"\d.\d","method":"(\w+)","params":{(.+)}}', re.IGNORECASE)
             m = result.match(str(pkt.unknown_header))
             if m:
@@ -215,7 +215,7 @@ class Collector:
                     else:
                         self.httpMalformedHeaders[src]["submit"][self.packetCount] = m.group()
 
-        if m is None:
+        if m == None:
             result = re.compile(r'{"id":\d+,"jsonrpc":"\d.\d","error":(.+)}}', re.IGNORECASE)
             m = result.match(str(pkt.unknown_header))
             if m:
@@ -387,11 +387,11 @@ class Collector:
             for snt in self.ip_addresses_only():
                 ip = ipaddress.IPv4Address(snt)
 
-                if ip.is_private is True:
+                if ip.is_private == True:
                     self.ip_fqdn[snt] = "Local"
                 else: 
                     dn = socket.getfqdn(snt)
-                    if dn is snt:
+                    if dn == snt:
                         self.ip_fqdn[snt] = "Not Found"
                     else: 
                         self.ip_fqdn[snt] = dn

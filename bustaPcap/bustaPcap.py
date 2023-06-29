@@ -1,9 +1,7 @@
 # Created by: Aaron Baker&Elliot Kjerstad
 import pyshark
-import sys
 import os
 import time
-import multiprocessing
 from pathlib import Path
 from optparse import OptionParser
 import colorama 
@@ -36,7 +34,7 @@ parser.add_option("-p", "--PCAP", dest="pcap_file", metavar="FILENAME",
 parser.add_option("-q", "--FQDN", dest="do_fqdn", action="store_true",
                   help="Usage: -q|--FQDN   This option finds Fully Qualified Domain Names with each IP found")
 
-parser.add_option("-v", "--VERBOSE", dest="verbose", action="store_true",
+parser.add_option("-v", "--VERBOSE", dest="verbose", action="store_false", default = True,
                   help="Usage: -v|--VERBOSE   Verbose setting allowing for optional printing to screen")
 
 parser.add_option("-o", "--OUTPUT", dest="save_file", action="store_true",
@@ -81,21 +79,21 @@ def Arg_Check():
             exit()
 
     if options.do_fqdn:
-        if options.do_fqdn is True:
+        if options.do_fqdn == True:
             options.do_fqdn = True
-        elif options.do_fqdn is False:
+        elif options.do_fqdn == False:
             options.do_fqdn = False
         else:
-            print(Fore.RED + "\t[!] " + Stlye.RESET_ALL + "Invalid -q option! Accepts True or False")
+            print(Fore.RED + "\t[!] " + Style.RESET_ALL + "Invalid -q option! Accepts True or False")
             exit()
 
     if options.verbose:
-        if options.verbose is True:
+        if options.verbose == True:
             options.verbose = True
-        elif options.verbose is None:
+        elif options.verbose == None:
             options.verbose = False
         else:
-            print(Fore.RED + "\t[!] " + Stlye.RESET_ALL + "Invalid -v option! Accepts True or False")
+            print(Fore.RED + "\t[!] " + Style.RESET_ALL + "Invalid -v option! Accepts True or False")
             exit()
 
     if not options.pcap_file and not options.dir_path:
@@ -122,7 +120,7 @@ def Single_PCAP():
     capture = Collector(captures, FileName=(os.path.basename(options.pcap_file)), FolderName = os.path.dirname(os.path.abspath(__file__))).Rake()
     #caps = Print(capture, options.do_fqdn)
     
-    if bool(options.verbose) is True:
+    if bool(options.verbose) == True:
         Print(capture, options.do_fqdn).Print_All()    
     
     print(Fore.LIGHTCYAN_EX + "\n\t  [?] " + Fore.LIGHTGREEN_EX + "Total Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - now) + " seconds.." + Style.RESET_ALL)
@@ -143,7 +141,7 @@ def Dir_PCAPS():
 
     for entry in os.scandir(correct_path):
             if entry.is_dir():
-                folder.append(entry.path)
+                folders.append(entry.path)
             elif entry.is_file():
                 files.append(entry.path)
 
@@ -161,7 +159,7 @@ def Dir_PCAPS():
         total_collection.Add_Collector(capture)
         print(Fore.LIGHTCYAN_EX + "\n\t  [?] " + Style.RESET_ALL + "Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - now) + " seconds.." + Style.RESET_ALL)
     
-    if bool(options.verbose) is True:
+    if bool(options.verbose) == True:
         Print(total_collection, options.do_fqdn).Print_All()
 
     print(Fore.LIGHTCYAN_EX + "\n\t  [?] " + Fore.LIGHTGREEN_EX + "Total Time Spent: " + Fore.LIGHTYELLOW_EX + "{0:.2f}".format(time.time() - totaltime) + " seconds.." + Style.RESET_ALL)
@@ -185,10 +183,10 @@ def Main():
     else:
         collected = Single_PCAP()
 
-    if collected is not None:
+    if collected != None:
         print(Fore.GREEN + "\n\t[-] " + Fore.LIGHTYELLOW_EX + "Writing to file" + Style.RESET_ALL)
         print(Fore.LIGHTGREEN_EX + "\t-----------------" + Style.RESET_ALL)
-        if type(collected) is Totals:
+        if type(collected) == Totals:
             folder = FolderStruct(os.path.dirname(os.path.abspath(__file__)))
             for pkt in collected.All_Collected():
                 folders = FolderStruct(os.path.dirname(os.path.abspath(__file__)))

@@ -1,11 +1,7 @@
 #!/usr/bin/python
 # Created by: Aaron Baker&Elliot Kjerstad
-
-from pathlib import Path
-import colorama 
 import os
-import platform
-from colorama import Fore, Back, Style
+from colorama import Fore, Style
 
 class Writer():
     #region Init For Class
@@ -29,7 +25,8 @@ class Writer():
                 print("Saving Error")
                 print(e)
         return
-
+    #endregion
+    
     #region Save Printer Data
     def Save(self):
         # changes needed to be made so that if the file exists the file is deleted and then re-created
